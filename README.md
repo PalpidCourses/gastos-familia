@@ -5,12 +5,12 @@ Sistema de gestión de gastos familiar con escaneo inteligente de tickets, conci
 ## 🚀 Inicio Rápido
 
 ```bash
-# 1. Clonar el repositorio
+# 1. Clonar repositorio
 git clone https://github.com/PalpidCourses/gastos-familia.git
 cd gastos-familia
 
-# 2. Iniciar servicios con Docker
-docker-compose up -d
+# 2. Arrancar PostgreSQL en Docker
+docker compose up -d postgres
 
 # 3. Instalar dependencias
 cd backend
@@ -19,13 +19,32 @@ npm install
 cd ../frontend
 npm install
 
-# 4. Iniciar desarrollo
+# 4. Crear usuario de prueba
+cd ../backend
+node src/scripts/seed.js
+
+# 5. Iniciar desarrollo
 # Backend (con hot reload)
 npm run dev
 
 # Frontend (Vite dev server)
+cd ../frontend
 npm run dev
+
+# 6. Acceder
+# Frontend: http://nono.aretaslab.tech o http://localhost:3001
+# Backend: http://localhost:3000
 ```
+
+### 🔐 Usuario de Prueba
+
+| Campo | Valor |
+|-------|-------|
+| **Email** | `david@gastos-familia.com` |
+| **Password** | `password123` |
+| **Tenant** | `familia-prueba` |
+
+Este usuario se crea automáticamente con el comando `node src/scripts/seed.js`.
 
 ## 📁 Estructura del Proyecto
 

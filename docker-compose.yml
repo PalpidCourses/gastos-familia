@@ -19,7 +19,7 @@ services:
       timeout: 5s
       retries: 5
 
-  # Backend Node.js
+  # Backend Node.js (comentar en desarrollo si usas npm run dev)
   backend:
     build: ./backend
     container_name: gastosfamilia-backend
@@ -30,7 +30,7 @@ services:
       PORT: 3000
       NODE_ENV: development
       JWT_SECRET: tu_secreto_jwt_super_seguro_muy_largo_para_firmar_tokens
-      CORS_ORIGIN: http://localhost:5173
+      CORS_ORIGIN: http://localhost:5173,http://localhost:3001,https://nono.aretaslab.tech
     depends_on:
       postgres:
         condition: service_healthy
@@ -38,12 +38,12 @@ services:
       - ./backend/src:/app/src
     command: npm start
 
-  # Frontend React + Vite
+  # Frontend React + Vite (comentar en desarrollo si usas npm run dev)
   frontend:
     build: ./frontend
     container_name: gastosfamilia-frontend
     ports:
-      - "5173:80"
+      - "80:80"
     environment:
       VITE_API_URL: http://localhost:3000
     depends_on:
@@ -51,7 +51,7 @@ services:
         condition: service_started
     volumes:
       - ./frontend/src:/app/src
-    command: npm run dev
+    command: nginx -g 'daemon off;'
 
 volumes:
   postgres_data:

@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS expenses (
   receipt_image_url TEXT,
   items JSONB DEFAULT '[]',
   notes TEXT,
-  for_who UUID ARRAY REFERENCES users(id),
+  for_who UUID[] DEFAULT '{}',
   allocation_method VARCHAR(50) DEFAULT 'equitable',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -131,42 +131,18 @@ ALTER TABLE merchants ENABLE ROW LEVEL SECURITY;
 ALTER TABLE expenses ENABLE ROW LEVEL SECURITY;
 ALTER TABLE recurring_expenses ENABLE ROW LEVEL SECURITY;
 
--- Políticas de tenant_id
-CREATE POLICY tenant_isolation_expenses ON expenses
-  USING (tenant_id = app.current_setting('app.tenant_id', true))
-  FOR ALL
-  TO authenticated_role;
-
-CREATE POLICY tenant_isolation_users ON users
-  USING (tenant_id = app.current_setting('app.tenant_id', true))
-  FOR ALL
-  TO authenticated_role;
-
--- Similar para otras tablas...
-CREATE POLICY tenant_isolation_families ON families
-  USING (tenant_id = app.current_setting('app.tenant_id', true))
-  FOR ALL
-  TO authenticated_role;
-
-CREATE POLICY tenant_isolation_categories ON categories
-  USING (tenant_id = app.current_setting('app.tenant_id', true))
-  FOR ALL
-  TO authenticated_role;
-
-CREATE POLICY tenant_isolation_merchants ON merchants
-  USING (tenant_id = app.current_setting('app.tenant_id', true))
-  FOR ALL
-  TO authenticated_role;
-
-CREATE POLICY tenant_isolation_recurring ON recurring_expenses
-  USING (tenant_id = app.current_setting('app.tenant_id', true))
-  FOR ALL
-  TO authenticated_role;
-
 -- Rol autenticado
 DO $$
 BEGIN
-  CREATE ROLE authenticated_role;
-  GRANT ALL ON ALL TABLES IN SCHEMA public TO authenticated_role;
+  IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'authenticated_role') THEN
+    CREATE ROLE authenticated_role;
+  END IF;
 END
 $$;
+
+-- Grant all permissions
+GRANT ALL ON ALL TABLES IN SCHEMA public TO authenticated_role;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO authenticated_role;
+
+-- Políticas de tenant_id (implementadas por middleware, no por RLS por ahora)
+-- Para producción, implementar políticas RLS completas
