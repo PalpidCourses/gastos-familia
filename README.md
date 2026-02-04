@@ -1,4 +1,4 @@
-# Gastos Familiares 🏠💰
+# Gastos Familia 🏠💰
 
 Gestión de gastos familiares - Web multitenant con Node.js backend y React frontend.
 
