@@ -54,6 +54,16 @@ function Dashboard() {
               </div>
             </div>
           </div>
+
+          <button
+            onClick={() => navigate('/categories')}
+            className="card text-left hover:shadow-md transition-shadow cursor-pointer"
+          >
+            <p className="font-semibold text-gray-900 dark:text-white">Categorías</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Gestionar categorías de gastos
+            </p>
+          </button>
         </aside>
 
         {/* Main Content */}
