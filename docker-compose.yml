@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  # Base de datos PostgreSQL
+  postgres:
+    image: postgres:15
+    container_name: gastosfamilia-db
+    environment:
+      POSTGRES_USER: gastosfamilia
+      POSTGRES_PASSWORD: gastosfamilia_secure
+      POSTGRES_DB: gastosfamilia
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gastosfamilia"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend Node.js
+  backend:
+    build: ./backend
+    container_name: gastosfamilia-backend
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgresql://gastosfamilia:gastosfamilia_secure@postgres:5432/gastosfamilia
+      PORT: 3000
+      NODE_ENV: development
+      JWT_SECRET: tu_secreto_jwt_super_seguro_muy_largo_para_firmar_tokens
+      CORS_ORIGIN: http://localhost:5173
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./backend/src:/app/src
+    command: npm start
+
+  # Frontend React + Vite
+  frontend:
+    build: ./frontend
+    container_name: gastosfamilia-frontend
+    ports:
+      - "5173:80"
+    environment:
+      VITE_API_URL: http://localhost:3000
+    depends_on:
+      backend:
+        condition: service_started
+    volumes:
+      - ./frontend/src:/app/src
+    command: npm run dev
+
+volumes:
+  postgres_data:
+    driver: local

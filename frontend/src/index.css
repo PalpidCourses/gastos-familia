@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styles */
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+  body {
+    @apply bg-accent-warm text-gray-900;
+  }
+  body.dark {
+    @apply bg-background-dark text-gray-100;
+  }
+}
+
+/* Componentes base reutilizables */
+@layer components {
+  .btn-primary {
+    @apply bg-primary hover:bg-primary-dark text-white font-semibold py-2.5 px-5 rounded-btn transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-secondary {
+    @apply bg-secondary hover:bg-secondary-dark text-white font-semibold py-2.5 px-5 rounded-btn transition-colors duration-200;
+  }
+  .btn-ghost {
+    @apply text-primary hover:bg-primary/10 font-semibold py-2.5 px-5 rounded-btn transition-colors duration-200;
+  }
+  .card {
+    @apply bg-white rounded-card shadow-card border border-gray-100 p-5;
+  }
+  .input-base {
+    @apply w-full px-4 py-2.5 rounded-input border border-gray-300 focus:border-primary focus:ring-2 focus:ring-primary/30 focus:outline-none transition-colors duration-200 bg-white text-gray-900;
+  }
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold;
+  }
+  .badge-primary {
+    @apply badge bg-primary/10 text-primary;
+  }
+  .badge-secondary {
+    @apply badge bg-secondary/10 text-secondary-dark;
+  }
+  .badge-danger {
+    @apply badge bg-red-100 text-red-700;
+  }
+  .badge-warning {
+    @apply badge bg-amber-100 text-amber-700;
+  }
+}
+
+/* Toast notifications */
+.toast {
+  @apply fixed bottom-4 right-4 z-50 max-w-sm w-full p-4 rounded-card shadow-drawer;
+  animation: slideUp 0.3s ease-out;
+}
+.toast-success { @apply bg-green-50 border border-green-200 text-green-800; }
+.toast-error   { @apply bg-red-50 border border-red-200 text-red-800; }
+.toast-warning { @apply bg-amber-50 border border-amber-200 text-amber-800; }
+.toast-info    { @apply bg-blue-50 border border-blue-200 text-blue-800; }
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(1rem); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Skeleton loading */
+.skeleton {
+  @apply animate-pulse bg-gray-200 rounded;
+}
+
+/* Scrollbar custom */
+::-webkit-scrollbar        { width: 6px; }
+::-webkit-scrollbar-track  { @apply bg-transparent; }
+::-webkit-scrollbar-thumb  { @apply bg-gray-300 rounded-full; }
+::-webkit-scrollbar-thumb:hover { @apply bg-gray-400; }
