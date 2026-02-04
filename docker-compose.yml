@@ -19,12 +19,12 @@ services:
       timeout: 5s
       retries: 5
 
-  # Backend Node.js (comentar en desarrollo si usas npm run dev)
+  # Backend Node.js
   backend:
     build: ./backend
     container_name: gastosfamilia-backend
     ports:
-      - "3000:3000"
+      - "3000:3000"  # Exponer para desarrollo local
     environment:
       DATABASE_URL: postgresql://gastosfamilia:gastosfamilia_secure@postgres:5432/gastosfamilia
       PORT: 3000
@@ -38,7 +38,7 @@ services:
       - ./backend/src:/app/src
     command: npm start
 
-  # Frontend React + Vite (comentar en desarrollo si usas npm run dev)
+  # Frontend React + Vite (usar nginx en producción)
   frontend:
     build: ./frontend
     container_name: gastosfamilia-frontend
@@ -47,8 +47,7 @@ services:
     environment:
       VITE_API_URL: http://localhost:3000
     depends_on:
-      backend:
-        condition: service_started
+      - backend
     volumes:
       - ./frontend/src:/app/src
     command: nginx -g 'daemon off;'

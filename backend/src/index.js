@@ -101,11 +101,15 @@ app.post('/api/expenses', async (req, res) => {
   const { amount, description, category_id, merchant_id, payment_method, notes } = req.body;
   
   try {
+    // Convertir strings vacíos a NULL para UUIDs
+    const categoryId = category_id || null;
+    const merchantId = merchant_id || null;
+    
     const result = await pool.query(`
       INSERT INTO expenses (tenant_id, amount, description, category_id, merchant_id, payment_method, notes)
       VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING id, amount, description, created_at
-    `, [req.tenantId, amount, description, category_id, merchant_id, payment_method, notes]);
+    `, [req.tenantId, amount, description, categoryId, merchantId, payment_method, notes]);
     
     res.status(201).json(result.rows[0]);
   } catch (err) {
