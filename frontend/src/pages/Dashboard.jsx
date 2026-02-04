@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LogOut, Home, FileText, Users, Settings, Plus } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import ExpenseList from '../components/ExpenseList';
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ function Dashboard() {
         {/* Main Content */}
         <main className="w-full lg:w-3/4 flex flex-col gap-8">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Resumen</h1>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Dashboard</h1>
             <button
               onClick={() => navigate('/expenses/new')}
               className="btn-primary"
@@ -68,32 +69,7 @@ function Dashboard() {
             </button>
           </div>
 
-          <div className="card">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-              Bienvenido, {user?.name || 'amigo'} 👋
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
-              Autenticación conectada al backend real. Usuario: <span className="font-mono text-xs bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">{user?.email}</span>
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="p-4 bg-primary/5 rounded-lg border border-primary/10">
-                <h3 className="text-lg font-semibold text-primary mb-2">Backend</h3>
-                <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
-                  <li>✅ Conectado</li>
-                  <li>✅ Auth JWT funcionando</li>
-                  <li>✅ PostgreSQL RLS</li>
-                </ul>
-              </div>
-              <div className="p-4 bg-secondary/10 rounded-lg border border-secondary/20">
-                <h3 className="text-lg font-semibold text-secondary-dark mb-2">Sprint 2</h3>
-                <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
-                  <li>⏳ CRUD Categorías</li>
-                  <li>⏳ Formulario Gastos</li>
-                  <li>⏳ Dashboard real</li>
-                </ul>
-              </div>
-            </div>
-          </div>
+          <ExpenseList />
         </main>
       </div>
 
