@@ -13,5 +13,12 @@ export default defineConfig({
     port: 3001,
     host: true,
     allowedHosts: ['nono.aretaslab.tech', 'localhost', '127.0.0.1'],
+    // Proxy /api al backend (localhost:3000)
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+      },
+    },
   },
 });
