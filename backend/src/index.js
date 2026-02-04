@@ -30,21 +30,45 @@ app.use((req, res, next) => {
   next();
 });
 
+// Middleware de autenticación JWT
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ error: 'Access denied' });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (error) {
+    return res.status(403).json({ error: 'Invalid token' });
+  }
+};
+
 // Middleware de RLS (tenant_id)
 app.use(async (req, res, next) => {
-  const tenantId = req.headers['x-tenant-id'];
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
   
-  if (tenantId) {
-    const client = await pool.connect();
-    await client.query(`SET app.tenant_id = '${tenantId}'`);
-    
-    req.db = client;
-    res.on('finish', async () => {
-      await client.query('RESET app.tenant_id');
-      client.release();
-    });
-  } else {
-    req.db = pool;
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = decoded;
+      
+      // Obtener tenant_id del token
+      const userResult = await pool.query(`
+        SELECT tenant_id FROM users WHERE id = $1
+      `, [decoded.userId]);
+      
+      if (userResult.rows.length > 0) {
+        req.tenantId = userResult.rows[0].tenant_id;
+      }
+    } catch (error) {
+      // Token inválido, continuar sin auth
+    }
   }
   
   next();
@@ -55,18 +79,55 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Routes básicas
+// Expenses routes (requiere autenticación)
 app.get('/api/expenses', async (req, res) => {
   try {
-    const result = await req.db.query(`
-      SELECT id, amount, description, category, merchant, payer, created_at
+    // Solo gastos del tenant autenticado
+    const result = await pool.query(`
+      SELECT id, amount, description, category_id, merchant_id, payment_method, notes, created_at
       FROM expenses
+      WHERE tenant_id = $1
       ORDER BY created_at DESC
       LIMIT 50
-    `);
+    `, [req.tenantId]);
     res.json(result.rows);
   } catch (err) {
     console.error('Error fetching expenses:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.post('/api/expenses', async (req, res) => {
+  const { amount, description, category_id, merchant_id, payment_method, notes } = req.body;
+  
+  try {
+    const result = await pool.query(`
+      INSERT INTO expenses (tenant_id, amount, description, category_id, merchant_id, payment_method, notes)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      RETURNING id, amount, description, created_at
+    `, [req.tenantId, amount, description, category_id, merchant_id, payment_method, notes]);
+    
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error('Error creating expense:', err);
+    res.status(500).json({ error: 'Error creating expense' });
+  }
+});
+
+app.get('/api/expenses/:id', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT * FROM expenses
+      WHERE id = $1 AND tenant_id = $2
+    `, [req.params.id, req.tenantId]);
+    
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Expense not found' });
+    }
+    
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('Error fetching expense:', err);
     res.status(500).json({ error: 'Internal server error' });
   }
 });

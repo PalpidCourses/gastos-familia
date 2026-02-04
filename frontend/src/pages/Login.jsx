@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Lock } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 function Login() {
   const navigate = useNavigate();
+  const { login } = useAuth();
+  
   const [formData, setFormData] = useState({
     email: '',
     password: '',
-    tenantSlug: 'mi-familia'
+    tenantSlug: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -17,27 +20,18 @@ function Login() {
     setLoading(true);
     setError('');
 
-    try {
-      // TODO: Conectar con backend real
-      // const response = await axios.post('/api/auth/login', formData);
-      
-      // Simulación temporal
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Guardar token simulado
-      localStorage.setItem('token', 'simulated-token-' + Date.now());
-      localStorage.setItem('user', JSON.stringify({ email: formData.email, role: 'admin' }));
-      
+    const result = await login(formData.email, formData.password, formData.tenantSlug);
+    
+    if (result.success) {
       navigate('/dashboard');
-    } catch (err) {
-      setError('Error al iniciar sesión');
-    } finally {
+    } else {
+      setError(result.error);
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background-light dark:bg-background-dark px-4">
+    <div className="min-h-screen flex items-center justify-center bg-accent-warm dark:bg-background-dark px-4">
       <div className="w-full max-w-md">
         <div className="bg-white dark:bg-white/5 rounded-xl shadow-lg p-8 border border-primary/10">
           <div className="text-center mb-8">
@@ -55,8 +49,8 @@ function Login() {
                 required
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:border-primary focus:ring-2 focus:ring-primary/50 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-                placeholder="tu@email.com"
+                className="w-full px-4 py-3 rounded-btn border border-gray-300 dark:border-gray-600 focus:border-primary focus:ring-2 focus:ring-primary/50 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                placeholder="david@gastos-familia.com"
               />
             </div>
 
@@ -69,7 +63,7 @@ function Login() {
                 required
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:border-primary focus:ring-2 focus:ring-primary/50 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                className="w-full px-4 py-3 rounded-btn border border-gray-300 dark:border-gray-600 focus:border-primary focus:ring-2 focus:ring-primary/50 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                 placeholder="••••••••"
               />
             </div>
@@ -82,9 +76,12 @@ function Login() {
                 type="text"
                 value={formData.tenantSlug}
                 onChange={(e) => setFormData({ ...formData, tenantSlug: e.target.value })}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:border-primary focus:ring-2 focus:ring-primary/50 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-                placeholder="mi-familia"
+                className="w-full px-4 py-3 rounded-btn border border-gray-300 dark:border-gray-600 focus:border-primary focus:ring-2 focus:ring-primary/50 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                placeholder="familia-prueba"
               />
+              <p className="text-xs text-gray-500 dark:text-gray-500 mt-1">
+                Deja vacío si no conoces tu slug de familia
+              </p>
             </div>
 
             {error && (
@@ -96,7 +93,7 @@ function Login() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 px-4 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full btn-primary"
             >
               {loading ? (
                 <span className="flex items-center justify-center">
@@ -116,7 +113,7 @@ function Login() {
           </form>
 
           <p className="text-center text-xs text-gray-500 dark:text-gray-500 mt-6">
-            ¿No tienes cuenta? <a href="#" className="text-primary hover:underline">Regístrate</a>
+            Usuario de prueba: david@gastos-familia.com / password123
           </p>
         </div>
       </div>
