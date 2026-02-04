@@ -200,8 +200,7 @@ function Categories() {
             <div
               key={category.id}
               className="card"
-              style={{ borderLeftColor: category.color }}
-              style={{ borderLeftWidth: '4px' }}
+              style={{ borderLeftColor: category.color, borderLeftWidth: '4px' }}
             >
               <div className="flex items-start justify-between">
                 <div className="flex-1">

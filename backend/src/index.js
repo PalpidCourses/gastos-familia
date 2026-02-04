@@ -138,6 +138,7 @@ app.get('/api/expenses/:id', async (req, res) => {
 
 // Categories routes
 app.get('/api/categories', async (req, res) => {
+  console.log('GET /api/categories, tenantId:', req.tenantId);
   try {
     const result = await pool.query(`
       SELECT id, name, color, icon, created_at
@@ -153,6 +154,7 @@ app.get('/api/categories', async (req, res) => {
 });
 
 app.post('/api/categories', async (req, res) => {
+  console.log('POST /api/categories, tenantId:', req.tenantId, 'body:', req.body);
   const { name, color, icon } = req.body;
   
   if (!name) {
