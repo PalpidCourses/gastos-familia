@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Detailed Expense History</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e17c60",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#201512",
+                        "success": "#d1fae5",
+                        "success-text": "#065f46"
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display min-h-screen">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- TopNavBar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#e5dedc] dark:border-white/10 px-6 md:px-10 lg:px-40 py-3 bg-white dark:bg-background-dark sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-[#171312] dark:text-white">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">receipt_long</span>
+</div>
+<h2 class="text-[#171312] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Family Ledger</h2>
+</div>
+<label class="hidden md:flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-[#866c65] flex border-none bg-background-light dark:bg-white/10 items-center justify-center pl-4 rounded-l-lg" data-icon="MagnifyingGlass">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 border-none bg-background-light dark:bg-white/10 text-[#171312] dark:text-white focus:outline-0 focus:ring-0 h-full placeholder:text-[#866c65] px-4 rounded-r-lg pl-2 text-base font-normal" placeholder="Search expenses..." value=""/>
+</div>
+</label>
+</div>
+<div class="flex flex-1 justify-end gap-4 items-center">
+<button class="flex min-w-[120px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold shadow-sm hover:bg-opacity-90 transition-all">
+<span class="material-symbols-outlined mr-2 text-lg">add</span>
+<span class="truncate">New Expense</span>
+</button>
+<div class="hidden sm:flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-background-light dark:bg-white/10 text-[#171312] dark:text-white">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-background-light dark:bg-white/10 text-[#171312] dark:text-white relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-primary rounded-full"></span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/20" data-alt="Avatar profile of the user" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCDFP02OKN9GljPMwnmc2oehekNa_gySXHCGUCrYxidcH1xkBXtCO4L1RzA_x67Mwtl3H6jVBlkJ7LytGN8jBq_apB-JqEkDRSmFYLvNbRi9BecNZlJskBmhLcm8lQPijMd8gqQ8l2H7j02nVULfgRXRzDAfmSwaTYReJelT_Tt4xFMO-VQLKFafmXjHH7FTnvBT_-fGsjCf2Fl_A4tbPlznOybJx0eGpuVd9wmzylS8Jg5hpK2W60hi8uNzpyAlVLcvFMzpCu65j8");'></div>
+</div>
+</header>
+<main class="px-6 md:px-10 lg:px-40 py-8 flex flex-col gap-6">
+<!-- PageHeading -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+<div class="flex flex-col gap-1">
+<p class="text-[#171312] dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">Expense History</p>
+<p class="text-[#866c65] dark:text-white/60 text-base font-normal">Review and reconcile your family's detailed spending breakdown.</p>
+</div>
+<div class="flex items-center gap-3 bg-white dark:bg-white/5 p-4 rounded-xl border border-[#e5dedc] dark:border-white/10">
+<div class="text-right">
+<p class="text-xs text-[#866c65] uppercase font-bold tracking-wider">Total this month</p>
+<p class="text-2xl font-black text-primary">$3,450.80</p>
+</div>
+<div class="w-px h-10 bg-[#e5dedc] dark:bg-white/10"></div>
+<div class="text-right">
+<p class="text-xs text-[#866c65] uppercase font-bold tracking-wider">Matched</p>
+<p class="text-2xl font-black text-success-text">92%</p>
+</div>
+</div>
+</div>
+<!-- ActionsBar/Filters -->
+<div class="bg-white dark:bg-white/5 rounded-xl border border-[#e5dedc] dark:border-white/10 p-2 overflow-x-auto">
+<div class="flex items-center gap-2 min-w-max">
+<div class="flex items-center gap-2 px-4 py-2 border-r border-[#e5dedc] dark:border-white/10 cursor-pointer hover:bg-background-light dark:hover:bg-white/5 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-primary">calendar_month</span>
+<div class="flex flex-col">
+<span class="text-[10px] uppercase font-bold text-[#866c65]">Date Range</span>
+<span class="text-sm font-semibold text-[#171312] dark:text-white">Last 30 Days</span>
+</div>
+<span class="material-symbols-outlined text-[#866c65]">expand_more</span>
+</div>
+<div class="flex items-center gap-2 px-4 py-2 border-r border-[#e5dedc] dark:border-white/10 cursor-pointer hover:bg-background-light dark:hover:bg-white/5 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-primary">category</span>
+<div class="flex flex-col">
+<span class="text-[10px] uppercase font-bold text-[#866c65]">Category</span>
+<span class="text-sm font-semibold text-[#171312] dark:text-white">All Categories</span>
+</div>
+<span class="material-symbols-outlined text-[#866c65]">expand_more</span>
+</div>
+<div class="flex items-center gap-2 px-4 py-2 border-r border-[#e5dedc] dark:border-white/10 cursor-pointer hover:bg-background-light dark:hover:bg-white/5 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-primary">person</span>
+<div class="flex flex-col">
+<span class="text-[10px] uppercase font-bold text-[#866c65]">Payer</span>
+<span class="text-sm font-semibold text-[#171312] dark:text-white">Everyone</span>
+</div>
+<span class="material-symbols-outlined text-[#866c65]">expand_more</span>
+</div>
+<div class="flex items-center gap-2 px-4 py-2 cursor-pointer hover:bg-background-light dark:hover:bg-white/5 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-primary">store</span>
+<div class="flex flex-col">
+<span class="text-[10px] uppercase font-bold text-[#866c65]">Merchant</span>
+<span class="text-sm font-semibold text-[#171312] dark:text-white">All Merchants</span>
+</div>
+<span class="material-symbols-outlined text-[#866c65]">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Table Container -->
+<div class="overflow-hidden rounded-xl border border-[#e5dedc] dark:border-white/10 bg-white dark:bg-white/5 shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-background-light dark:bg-white/5 border-b border-[#e5dedc] dark:border-white/10">
+<th class="px-6 py-4 text-[#171312] dark:text-white text-sm font-bold uppercase tracking-wider w-40">Date</th>
+<th class="px-6 py-4 text-[#171312] dark:text-white text-sm font-bold uppercase tracking-wider">Merchant</th>
+<th class="px-6 py-4 text-[#171312] dark:text-white text-sm font-bold uppercase tracking-wider">Amount</th>
+<th class="px-6 py-4 text-[#171312] dark:text-white text-sm font-bold uppercase tracking-wider">Payer</th>
+<th class="px-6 py-4 text-[#171312] dark:text-white text-sm font-bold uppercase tracking-wider">Category</th>
+<th class="px-6 py-4 text-[#171312] dark:text-white text-sm font-bold uppercase tracking-wider text-right">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#e5dedc] dark:divide-white/10">
+<!-- Standard Row -->
+<tr class="hover:bg-background-light/50 dark:hover:bg-white/5 transition-colors cursor-pointer">
+<td class="px-6 py-5 text-[#866c65] dark:text-white/60 text-sm">Oct 26, 2023</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-background-light dark:bg-white/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">bolt</span>
+</div>
+<span class="font-semibold text-[#171312] dark:text-white">City Energy</span>
+</div>
+</td>
+<td class="px-6 py-5 font-bold text-[#171312] dark:text-white">$142.50</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2 px-3 py-1 bg-background-light dark:bg-white/10 rounded-full w-fit">
+<div class="size-5 rounded-full bg-blue-200" data-alt="Dad avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBe1vsUjgH5IZsSL3tp3Qgr1QItKMguRoB3EMogWCXgZ6t1iuwAkAzXR96H1Zk8MG8EdDipNRvy6Jq9VPcim-HluyIhNHs5mFQRHB8Sb2XcOx4hFPjlTErqkXsSzEOMhago9P2O6kNHbK_tBQ1ULa-EYYc9LoeUftFFiabdgVTEqOju5ZV_J52NwQgybMcQM3o7jM-Ie2-JWJLJ8sGzHgMzyOR6fpyzKtcewF4CCKWrZzzVeMW8ghJ6kh2-IqngO9_1Y9IRvmgpRIk'); background-size: cover;"></div>
+<span class="text-xs font-medium text-[#171312] dark:text-white">Dad</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-bold uppercase tracking-tight">Utilities</span>
+</td>
+<td class="px-6 py-5 text-right">
+<span class="px-3 py-1 bg-success text-success-text rounded-full text-xs font-bold">Reconciled</span>
+</td>
+</tr>
+<!-- Expanded Row Container -->
+<tr class="bg-background-light/30 dark:bg-white/5">
+<td class="px-6 py-5 text-[#866c65] dark:text-white/60 text-sm border-l-4 border-primary">Oct 25, 2023</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-background-light dark:bg-white/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm text-primary">shopping_cart</span>
+</div>
+<span class="font-semibold text-[#171312] dark:text-white">Supermercado Central</span>
+</div>
+</td>
+<td class="px-6 py-5 font-bold text-[#171312] dark:text-white">$85.50</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2 px-3 py-1 bg-background-light dark:bg-white/10 rounded-full w-fit">
+<div class="size-5 rounded-full bg-pink-200" data-alt="Mom avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCVSF3BAJQrGZ_dIDKGa-Z8_ODGxaMrUZ12MJ_hjrIH1ed__2t998-oq-FVwpKrr8AqmzsHYZ2_BkxPZQYXz4nOTqce1mlBgcHayzwhgrD2RSBhr1Wo6kJxI1UtoUQ8h81Cpq-Y1_TL4pL0lyo3hWcmz-luqqQWM6HlyEY5qVk0k_qb2C16vRe-sTu27koBe4EelmcSSzXoud7AJu7qSYleeGvzMRbkm052yhn57quUruXNefiuWMHy_ua0RRjI5c3HtXp0TqqQmOk'); background-size: cover;"></div>
+<span class="text-xs font-medium text-[#171312] dark:text-white">Mom</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-bold uppercase tracking-tight">Groceries</span>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="flex items-center justify-end gap-2 text-primary font-bold text-xs uppercase cursor-pointer">
+                                        Collapse <span class="material-symbols-outlined text-sm">expand_less</span>
+</div>
+</td>
+</tr>
+<!-- Detailed Content (Expanded View) -->
+<tr class="bg-background-light/30 dark:bg-white/5">
+<td class="px-6 pb-8 pt-2" colspan="6">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-in fade-in duration-300">
+<!-- AI Breakdown -->
+<div class="bg-white dark:bg-background-dark/50 rounded-xl p-5 border border-[#e5dedc] dark:border-white/10 shadow-sm">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary">smart_toy</span>
+<h3 class="text-sm font-bold text-[#171312] dark:text-white uppercase tracking-wider">AI Breakdown</h3>
+</div>
+<ul class="space-y-3">
+<li class="flex justify-between items-center text-sm">
+<span class="text-[#866c65] dark:text-white/60">Leche Semidesnatada (2x)</span>
+<span class="font-semibold text-[#171312] dark:text-white">$3.20</span>
+</li>
+<li class="flex justify-between items-center text-sm">
+<span class="text-[#866c65] dark:text-white/60">Huevos Camperos L (12u)</span>
+<span class="font-semibold text-[#171312] dark:text-white">$4.50</span>
+</li>
+<li class="flex justify-between items-center text-sm">
+<span class="text-[#866c65] dark:text-white/60">Pan Integral Masa Madre</span>
+<span class="font-semibold text-[#171312] dark:text-white">$2.45</span>
+</li>
+<li class="flex justify-between items-center text-sm border-t border-[#f4f1f0] dark:border-white/5 pt-3 mt-3">
+<span class="font-bold text-[#171312] dark:text-white">Items Total</span>
+<span class="font-bold text-primary">$10.15</span>
+</li>
+</ul>
+<p class="text-[10px] text-[#866c65] mt-4 italic">Showing 3 of 18 items. <a class="text-primary font-bold underline" href="#">View all</a></p>
+</div>
+<!-- Split Distribution -->
+<div class="bg-white dark:bg-background-dark/50 rounded-xl p-5 border border-[#e5dedc] dark:border-white/10 shadow-sm">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary">groups</span>
+<h3 class="text-sm font-bold text-[#171312] dark:text-white uppercase tracking-wider">Distribution</h3>
+</div>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between text-xs mb-1">
+<span class="font-semibold text-[#171312] dark:text-white">Mom (Paid)</span>
+<span class="text-[#866c65] font-bold">50% — $42.75</span>
+</div>
+<div class="w-full bg-background-light dark:bg-white/10 h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[50%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs mb-1">
+<span class="font-semibold text-[#171312] dark:text-white">Dad (Owes)</span>
+<span class="text-[#866c65] font-bold">50% — $42.75</span>
+</div>
+<div class="w-full bg-background-light dark:bg-white/10 h-2 rounded-full overflow-hidden">
+<div class="bg-primary/40 h-full w-[50%]"></div>
+</div>
+</div>
+<button class="w-full mt-2 py-2 border-2 border-dashed border-[#e5dedc] dark:border-white/10 rounded-lg text-xs font-bold text-[#866c65] hover:border-primary hover:text-primary transition-all">
+                                                    MODIFY SPLIT
+                                                </button>
+</div>
+</div>
+<!-- Receipt Preview -->
+<div class="bg-white dark:bg-background-dark/50 rounded-xl p-5 border border-[#e5dedc] dark:border-white/10 shadow-sm flex flex-col items-center justify-center text-center">
+<div class="relative group cursor-zoom-in">
+<div class="w-24 h-32 bg-background-light dark:bg-white/10 rounded-md border border-[#e5dedc] dark:border-white/10 flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end justify-center pb-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="text-[10px] text-white font-bold">FULL VIEW</span>
+</div>
+<span class="material-symbols-outlined text-4xl text-[#866c65] dark:text-white/20">receipt</span>
+</div>
+</div>
+<h3 class="mt-3 text-xs font-bold text-[#171312] dark:text-white uppercase tracking-wider">Ticket Scanned</h3>
+<p class="text-[10px] text-success-text font-bold bg-success px-2 py-0.5 rounded-full mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">check_circle</span>
+                                                Confidence 99.2%
+                                            </p>
+</div>
+</div>
+</td>
+</tr>
+<!-- Standard Row -->
+<tr class="hover:bg-background-light/50 dark:hover:bg-white/5 transition-colors cursor-pointer">
+<td class="px-6 py-5 text-[#866c65] dark:text-white/60 text-sm">Oct 24, 2023</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-background-light dark:bg-white/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">local_cafe</span>
+</div>
+<span class="font-semibold text-[#171312] dark:text-white">Coffee House</span>
+</div>
+</td>
+<td class="px-6 py-5 font-bold text-[#171312] dark:text-white">$12.40</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2 px-3 py-1 bg-background-light dark:bg-white/10 rounded-full w-fit">
+<div class="size-5 rounded-full bg-pink-200" data-alt="Mom avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAgk7-u9wNz5z9l-2E8rySvInuFWe3M9KZw7x2zU4HxJa4N8-QqV3xs2unvPPiBgeEPsDWlSkGW-ra23zmmOXKLvqGeGvKGoIemafLZIMv00D5WCsx7gpAVDrxl_WkOQRpzeniT1aR4-yn0QWRCXtqMV2UyynfZjczhGGf_BmFjuggMllBKO02juof0UteRBtl6juIfqV2uhXCDeUDIyjDdYQHVPj2QT9Tr9He8HWOW8c5pZnVbnlEujuBnnh0IemX6d_6_c3ZUnvQ'); background-size: cover;"></div>
+<span class="text-xs font-medium text-[#171312] dark:text-white">Mom</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-bold uppercase tracking-tight">Dining</span>
+</td>
+<td class="px-6 py-5 text-right">
+<span class="px-3 py-1 bg-success text-success-text rounded-full text-xs font-bold">Reconciled</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Footer Pagination-like controls -->
+<div class="flex justify-between items-center px-4">
+<p class="text-sm text-[#866c65]">Showing 1-10 of 245 expenses</p>
+<div class="flex gap-2">
+<button class="h-10 w-10 flex items-center justify-center rounded-lg border border-[#e5dedc] dark:border-white/10 text-[#866c65] hover:bg-white dark:hover:bg-white/10">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="h-10 w-10 flex items-center justify-center rounded-lg border border-[#e5dedc] dark:border-white/10 bg-primary text-white font-bold">1</button>
+<button class="h-10 w-10 flex items-center justify-center rounded-lg border border-[#e5dedc] dark:border-white/10 text-[#866c65] hover:bg-white dark:hover:bg-white/10">2</button>
+<button class="h-10 w-10 flex items-center justify-center rounded-lg border border-[#e5dedc] dark:border-white/10 text-[#866c65] hover:bg-white dark:hover:bg-white/10">3</button>
+<button class="h-10 w-10 flex items-center justify-center rounded-lg border border-[#e5dedc] dark:border-white/10 text-[#866c65] hover:bg-white dark:hover:bg-white/10">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Floating Action Button (Alternative placement for mobile/speed) -->
+<button class="fixed bottom-8 right-8 size-14 rounded-full bg-primary text-white shadow-xl flex items-center justify-center hover:scale-110 transition-transform lg:hidden">
+<span class="material-symbols-outlined text-2xl">add</span>
+</button>
+</div>
+</div>
+</body></html>

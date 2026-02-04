@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Family Finance Login</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#e17c60",
+              "background-light": "#f4f1de", // Using the requested cream color
+              "background-dark": "#201512",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen flex flex-col items-center justify-center font-display transition-colors duration-300">
+<!-- Top Navigation Container (Simple Branding) -->
+<header class="fixed top-0 left-0 w-full flex items-center justify-between px-8 py-6 max-w-[1280px] mx-auto left-1/2 -translate-x-1/2">
+<div class="flex items-center gap-2 text-[#171312] dark:text-white">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">family_restroom</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">FamFinance</h2>
+</div>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-white/50 dark:bg-white/10 text-[#171312] dark:text-white text-sm font-bold border border-black/5 hover:bg-white transition-all">
+<span class="truncate">Help</span>
+</button>
+</header>
+<!-- Main Content Area -->
+<main class="w-full max-w-[480px] px-6 py-12">
+<!-- Login Card -->
+<div class="bg-white dark:bg-[#2d1f1b] rounded-xl shadow-xl shadow-black/5 p-8 flex flex-col items-center border border-black/5">
+<!-- Branding/Icon -->
+<div class="mb-6 flex flex-col items-center">
+<div class="size-12 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4">
+<span class="material-symbols-outlined text-3xl">account_balance_wallet</span>
+</div>
+<h1 class="text-[#171312] dark:text-white tracking-tight text-2xl font-bold leading-tight text-center">Welcome back</h1>
+<p class="text-[#171312]/60 dark:text-white/60 text-sm font-normal leading-normal text-center mt-1">Manage your family's finances together.</p>
+</div>
+<!-- Form -->
+<form class="w-full space-y-4">
+<!-- Email Field -->
+<div class="flex flex-col w-full">
+<p class="text-[#171312] dark:text-white text-sm font-medium leading-normal pb-1.5 px-1">Email Address</p>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[#866c65] text-xl">mail</span>
+<input class="form-input flex w-full rounded-lg text-[#171312] focus:ring-2 focus:ring-primary/20 focus:border-primary border-[#e5dedc] bg-white h-12 pl-12 placeholder:text-[#866c65] text-sm" placeholder="e.g. alex@family.com" type="email" value=""/>
+</div>
+</div>
+<!-- Password Field -->
+<div class="flex flex-col w-full">
+<p class="text-[#171312] dark:text-white text-sm font-medium leading-normal pb-1.5 px-1">Password</p>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[#866c65] text-xl">lock</span>
+<input class="form-input flex w-full rounded-lg text-[#171312] focus:ring-2 focus:ring-primary/20 focus:border-primary border-[#e5dedc] bg-white h-12 pl-12 placeholder:text-[#866c65] text-sm" placeholder="••••••••" type="password" value=""/>
+</div>
+</div>
+<!-- Options Row -->
+<div class="flex items-center justify-between px-1 py-1">
+<label class="flex items-center gap-2 cursor-pointer group">
+<input class="rounded text-primary focus:ring-primary border-[#e5dedc] size-4" type="checkbox"/>
+<span class="text-[#171312]/70 dark:text-white/70 text-sm font-medium group-hover:text-primary transition-colors">Remember me</span>
+</label>
+<a class="text-primary text-sm font-semibold hover:underline decoration-2 underline-offset-4" href="#">Forgot password?</a>
+</div>
+<!-- Action Button -->
+<button class="w-full bg-primary hover:bg-[#d06b50] text-white font-bold h-12 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-lg shadow-primary/20 mt-2" type="submit">
+<span class="truncate">Login to Dashboard</span>
+<span class="material-symbols-outlined text-lg">login</span>
+</button>
+</form>
+<!-- Divider -->
+<div class="flex items-center w-full my-8">
+<div class="flex-grow h-px bg-[#e5dedc] dark:bg-white/10"></div>
+<span class="px-3 text-[#866c65] text-xs font-medium uppercase tracking-wider">Secure Access</span>
+<div class="flex-grow h-px bg-[#e5dedc] dark:bg-white/10"></div>
+</div>
+<!-- SSO / Alternative Options (Optional placeholder) -->
+<div class="flex gap-4 w-full">
+<button class="flex-1 flex items-center justify-center h-11 border border-[#e5dedc] rounded-lg bg-white hover:bg-gray-50 transition-colors">
+<img alt="" class="size-5" data-alt="Google company logo icon" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpmsAZ1bA48QW7KdlWuge78DayPLWcHjB-GwxXquSZMiWbt8uXLzsfu226egG7Ks55GMhbIHJCY0zfyvhO7U2dbEIcVC5TA9WexnR8npPnD34xERQ7HTv0UI1jCyZy-RHx3f5qV4a4gT4tQj7Pfu3s8weRQF21Ftcmju_trnyg_12fPPrfO9HqxuOvr8fmPiKZ3V56dLizi36pUL6LWmk6CMzFQx05M_b1cW6gVXjoFpCU4yzN_8DZEgIoGCThjytFGrJUGLyFdz4"/>
+</button>
+<button class="flex-1 flex items-center justify-center h-11 border border-[#e5dedc] rounded-lg bg-white hover:bg-gray-50 transition-colors">
+<span class="material-symbols-outlined text-[#171312]">ios</span>
+</button>
+</div>
+</div>
+<!-- Secondary CTA Footer -->
+<div class="mt-8 text-center">
+<p class="text-[#171312]/70 dark:text-white/70 text-sm font-normal">
+                New to the platform? 
+                <a class="text-primary font-bold hover:underline decoration-2 underline-offset-4 ml-1" href="#">Register your family</a>
+</p>
+</div>
+</main>
+<!-- Visual Footer Elements -->
+<footer class="fixed bottom-0 w-full py-6 text-center">
+<div class="flex justify-center gap-6 text-[#866c65] dark:text-white/40 text-xs font-medium">
+<a class="hover:text-primary" href="#">Privacy Policy</a>
+<a class="hover:text-primary" href="#">Terms of Service</a>
+<a class="hover:text-primary" href="#">Contact Support</a>
+</div>
+</footer>
+<!-- Abstract Decorative Background (Subtle) -->
+<div class="fixed top-0 left-0 w-full h-full -z-10 opacity-30 pointer-events-none">
+<div class="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-primary/10 blur-[100px]"></div>
+<div class="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-primary/5 blur-[100px]"></div>
+</div>
+</body></html>

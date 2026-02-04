@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Transaction Reconciliation Inbox</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e17c60",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#201512",
+                        "warning-yellow": "#F2CC8F",
+                        "soft-blue": "#e0f2fe"
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen font-display transition-colors duration-200">
+<div class="flex h-screen overflow-hidden">
+<!-- Side Navigation -->
+<aside class="w-64 border-r border-gray-200 dark:border-white/10 bg-white dark:bg-background-dark flex flex-col shrink-0">
+<div class="p-6 flex flex-col h-full">
+<div class="flex items-center gap-3 mb-10">
+<div class="bg-primary rounded-lg size-10 flex items-center justify-center text-white">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+</div>
+<div>
+<h1 class="text-[#171312] dark:text-white text-base font-bold leading-none">Family Finance</h1>
+<p class="text-[#866c65] dark:text-gray-400 text-xs mt-1">Management System</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2 flex-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">account_balance</span>
+<span class="text-sm font-semibold">Reconciliation</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="text-sm font-medium">Expenses</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined">savings</span>
+<span class="text-sm font-medium">Budget</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-gray-100 dark:border-white/5 pt-6">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Settings</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto">
+<!-- Top Navbar -->
+<header class="sticky top-0 z-10 flex items-center justify-between bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-gray-200 dark:border-white/10 px-8 py-4">
+<div class="flex items-center gap-3">
+<h2 class="text-xl font-bold text-[#171312] dark:text-white">Reconciliation Inbox</h2>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">search</span>
+<input class="w-full bg-gray-100 dark:bg-white/5 border-none rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary/50 text-[#171312] dark:text-white" placeholder="Search transactions..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 rounded-lg bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-300 relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2.5 w-2 h-2 bg-primary rounded-full border-2 border-white dark:border-background-dark"></span>
+</button>
+<button class="p-2 rounded-lg bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-300">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<div class="max-w-4xl mx-auto px-8 py-8">
+<!-- Headline & Summary -->
+<div class="mb-8">
+<h1 class="text-3xl font-bold text-[#171312] dark:text-white mb-2">Needs Your Attention</h1>
+<div class="flex items-center gap-2 px-4 py-2 bg-warning-yellow/20 border border-warning-yellow/30 rounded-xl w-fit">
+<span class="material-symbols-outlined text-warning-yellow text-sm font-bold">priority_high</span>
+<p class="text-[#866c65] dark:text-gray-300 text-sm font-medium">3 items need manual reconciliation • All other transactions are caught up.</p>
+</div>
+</div>
+<!-- Tabs -->
+<div class="mb-8 border-b border-gray-200 dark:border-white/10">
+<div class="flex gap-8">
+<button class="pb-4 border-b-2 border-primary text-primary font-bold text-sm">Needs Attention (3)</button>
+<button class="pb-4 border-b-2 border-transparent text-[#866c65] font-medium text-sm hover:text-primary transition-colors">Resolved</button>
+<button class="pb-4 border-b-2 border-transparent text-[#866c65] font-medium text-sm hover:text-primary transition-colors">Ignored</button>
+</div>
+</div>
+<!-- Transaction Inbox Cards -->
+<div class="flex flex-col gap-6">
+<!-- Card 1: Missing Ticket -->
+<div class="bg-white dark:bg-white/5 rounded-xl border-l-4 border-warning-yellow shadow-sm p-6 overflow-hidden">
+<div class="flex justify-between items-start mb-6">
+<div class="flex gap-4">
+<div class="size-12 rounded-full bg-warning-yellow/10 flex items-center justify-center text-warning-yellow">
+<span class="material-symbols-outlined">receipt_long</span>
+</div>
+<div>
+<h3 class="font-bold text-[#171312] dark:text-white text-lg">Bank Charge without Ticket</h3>
+<p class="text-sm text-[#866c65] dark:text-gray-400">AI couldn't find a matching scanned receipt for this bank entry.</p>
+</div>
+</div>
+<span class="text-2xl font-bold text-[#171312] dark:text-white">$45.00</span>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="p-4 bg-gray-50 dark:bg-white/5 rounded-lg border border-gray-100 dark:border-white/5">
+<p class="text-[10px] font-bold uppercase tracking-wider text-[#866c65] mb-2">Bank Statement</p>
+<div class="flex justify-between items-center">
+<div>
+<p class="font-semibold text-sm dark:text-white">Amazon.com*Amzn.com/bill</p>
+<p class="text-xs text-gray-500">Oct 12, 2023</p>
+</div>
+<span class="material-symbols-outlined text-gray-400 text-sm">chevron_right</span>
+</div>
+</div>
+<div class="p-4 bg-soft-blue/30 border border-blue-100 rounded-lg flex flex-col justify-center items-center">
+<span class="material-symbols-outlined text-blue-400 mb-1">no_photography</span>
+<p class="text-xs text-blue-600 font-medium">No ticket found</p>
+</div>
+</div>
+<div class="flex gap-3 pt-2">
+<button class="flex-1 bg-primary text-white py-2.5 rounded-lg font-bold text-sm shadow-md shadow-primary/20 hover:bg-primary/90 transition-all">Match Manually</button>
+<button class="px-4 py-2.5 border border-gray-200 dark:border-white/10 text-[#171312] dark:text-white rounded-lg font-medium text-sm hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">Mark as Cash</button>
+<button class="px-4 py-2.5 border border-gray-200 dark:border-white/10 text-[#171312] dark:text-white rounded-lg font-medium text-sm hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">Report Issue</button>
+</div>
+</div>
+<!-- Card 2: Duplicate Found -->
+<div class="bg-white dark:bg-white/5 rounded-xl border-l-4 border-warning-yellow shadow-sm p-6 overflow-hidden">
+<div class="flex justify-between items-start mb-6">
+<div class="flex gap-4">
+<div class="size-12 rounded-full bg-warning-yellow/10 flex items-center justify-center text-warning-yellow">
+<span class="material-symbols-outlined">content_copy</span>
+</div>
+<div>
+<h3 class="font-bold text-[#171312] dark:text-white text-lg">Duplicate Receipt Found</h3>
+<p class="text-sm text-[#866c65] dark:text-gray-400">Two identical tickets scanned for the same Starbucks transaction.</p>
+</div>
+</div>
+<span class="text-2xl font-bold text-[#171312] dark:text-white">$5.50</span>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="p-4 bg-gray-50 dark:bg-white/5 rounded-lg border border-gray-100 dark:border-white/5">
+<p class="text-[10px] font-bold uppercase tracking-wider text-[#866c65] mb-2">Ticket A (Scanned)</p>
+<div class="flex items-center gap-3">
+<div class="size-10 bg-gray-200 dark:bg-white/10 rounded overflow-hidden">
+<div class="w-full h-full bg-cover bg-center" data-alt="Faded receipt image of coffee shop" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCJ0oRdutE2RJM2s8TLHbFYTg1brAE9cqQjLqYa1_edBxmEvvo9VXL1w1Bk2JeosGybgjrdAoyaBIPBx9fRHvem0q_QnbCPT7h_z99NGIH9fquvSOp6U-yBpTvcZC0jSNi-ll-6tUFcrpji4hp0LEdgwLkS70mQSk5lh_yAB6ZjPB39w_avz7r1HKkffjb1yhgQkOpVkL-GI2kUbYpN8URHlzh4E9lT7-nKtElUI9aJAmAj14EFhNq1ixUfpVKyyh7XkLyrk5HPuUM');"></div>
+</div>
+<div>
+<p class="font-semibold text-sm dark:text-white">Starbucks #4821</p>
+<p class="text-xs text-gray-500">Oct 14, 2023</p>
+</div>
+</div>
+</div>
+<div class="p-4 bg-gray-50 dark:bg-white/5 rounded-lg border border-gray-100 dark:border-white/5">
+<p class="text-[10px] font-bold uppercase tracking-wider text-[#866c65] mb-2">Ticket B (Scanned)</p>
+<div class="flex items-center gap-3">
+<div class="size-10 bg-gray-200 dark:bg-white/10 rounded overflow-hidden">
+<div class="w-full h-full bg-cover bg-center" data-alt="Same faded receipt image of coffee shop" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBWWnIiQpKu1AADoZpiBQnavwltPmrE9FHdiQRtqodUSxLu24EKyYnhFXggqoGogsy9KDgOpix-I1PIsBOpX4Mu1ZnOVm00tz6v8qKxfz1NEyauCTkZjnj5c74yxjh42vwNWHXElTC-DKUhlW2za_BWT80d9a02TjkvBtNgw1FFcA-gsRYrLooJbB4ztTHNc6S3FYT-GrPSrMAMsABtSvowWMltr18rnwsGF45OpOLndt_tMK7BBTGQW39mNQBmk1aSKPIKSI6Q-oo');"></div>
+</div>
+<div>
+<p class="font-semibold text-sm dark:text-white">Starbucks #4821</p>
+<p class="text-xs text-gray-500">Oct 14, 2023</p>
+</div>
+</div>
+</div>
+</div>
+<div class="flex gap-3 pt-2">
+<button class="flex-1 bg-primary text-white py-2.5 rounded-lg font-bold text-sm shadow-md shadow-primary/20 hover:bg-primary/90 transition-all">Merge Tickets</button>
+<button class="px-4 py-2.5 border border-gray-200 dark:border-white/10 text-[#171312] dark:text-white rounded-lg font-medium text-sm hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">Dismiss One</button>
+</div>
+</div>
+<!-- Card 3: Ticket without Bank Match -->
+<div class="bg-white dark:bg-white/5 rounded-xl border-l-4 border-warning-yellow shadow-sm p-6 overflow-hidden">
+<div class="flex justify-between items-start mb-6">
+<div class="flex gap-4">
+<div class="size-12 rounded-full bg-warning-yellow/10 flex items-center justify-center text-warning-yellow">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+</div>
+<div>
+<h3 class="font-bold text-[#171312] dark:text-white text-lg">Ticket without Bank Match</h3>
+<p class="text-sm text-[#866c65] dark:text-gray-400">Scanned receipt found but no corresponding charge in bank accounts.</p>
+</div>
+</div>
+<span class="text-2xl font-bold text-[#171312] dark:text-white">$120.00</span>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="p-4 bg-soft-blue/30 border border-blue-100 rounded-lg flex flex-col justify-center items-center">
+<span class="material-symbols-outlined text-blue-400 mb-1">search_off</span>
+<p class="text-xs text-blue-600 font-medium">Bank match not found</p>
+</div>
+<div class="p-4 bg-gray-50 dark:bg-white/5 rounded-lg border border-gray-100 dark:border-white/5">
+<p class="text-[10px] font-bold uppercase tracking-wider text-[#866c65] mb-2">Scanned Ticket</p>
+<div class="flex items-center gap-3">
+<div class="size-10 bg-gray-200 dark:bg-white/10 rounded overflow-hidden">
+<div class="w-full h-full bg-cover bg-center" data-alt="Grocery store receipt thumbnail" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCn0I7YPcgzwTR6NM-BR2sOKN9sk7oSbCY8JLLD9p_iZnIjmYFTutPmsVdVQ5mXvgTj_lZCw38ZXP1bO3qqgNaoN1LADCa2VRl--qoY5VzDM-199y2GCarY56bLjnbjTD22rGO8wKe5B3JX95IYatqxk3kA8_uB291g4UpMuzhbnZFwp4nobglu0jTYrm9zNDQ0DPY0Ui2fLU9_qhRJ9oBCZ8vED5s4kGlNCrHrIqtbMW-BAkLBq4l4eK98HvL-FLTank5zCnIyWPA');"></div>
+</div>
+<div>
+<p class="font-semibold text-sm dark:text-white">Whole Foods Market</p>
+<p class="text-xs text-gray-500">Oct 11, 2023</p>
+</div>
+</div>
+</div>
+</div>
+<div class="flex gap-3 pt-2">
+<button class="flex-1 bg-primary text-white py-2.5 rounded-lg font-bold text-sm shadow-md shadow-primary/20 hover:bg-primary/90 transition-all">Match with Bank Entry</button>
+<button class="px-4 py-2.5 border border-gray-200 dark:border-white/10 text-[#171312] dark:text-white rounded-lg font-medium text-sm hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">Mark as Cash Expense</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

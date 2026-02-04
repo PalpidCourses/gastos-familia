@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Family Finance Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e17c60",
+                        "secondary": "#81B29A",
+                        "accent-cream": "#F4F1DE",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#201512",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen text-[#171312] dark:text-white transition-colors duration-300">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-primary/10 bg-white dark:bg-background-dark px-10 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-6">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-[#171312] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">FamilyFinance</h2>
+</div>
+<div class="hidden md:flex items-center gap-9">
+<a class="text-primary text-sm font-semibold leading-normal" href="#">Dashboard</a>
+<a class="text-[#171312] dark:text-white/70 text-sm font-medium leading-normal hover:text-primary" href="#">Analytics</a>
+<a class="text-[#171312] dark:text-white/70 text-sm font-medium leading-normal hover:text-primary" href="#">Receipts</a>
+<a class="text-[#171312] dark:text-white/70 text-sm font-medium leading-normal hover:text-primary" href="#">Recurrent</a>
+</div>
+</div>
+<div class="flex flex-1 justify-end gap-4 items-center">
+<label class="flex flex-col min-w-40 !h-10 max-w-64 hidden sm:block">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-[#866c65] flex border-none bg-primary/5 dark:bg-white/5 items-center justify-center pl-4 rounded-l-lg" data-icon="search">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#171312] dark:text-white focus:outline-0 focus:ring-0 border-none bg-primary/5 dark:bg-white/5 focus:border-none h-full placeholder:text-[#866c65] px-4 rounded-l-none border-l-0 pl-2 text-base font-normal" placeholder="Search expenses..." value=""/>
+</div>
+</label>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-primary/5 dark:bg-white/5 text-[#171312] dark:text-white">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-primary/5 dark:bg-white/5 text-[#171312] dark:text-white">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/20" data-alt="User profile avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAZYTX-hf_Kg-GDzEqgN8dGleGBMIFSReLkGt8fOmvc1npSLtkuQCxkOkDgx4_QePPQVciCKeTcKmZtOCdN3uwJApd-EKgK3w_6x2cARvyMRBTafwgVbVz17FkPPH82yGBjfUmUK3-ihTxOYLLN_tqD2kVZbPaYiv6lcKvRaD50FAW3o5KtiL07v3iAduPkju-HFHWTfJgy8TCC9ctAxCdPjcOhXC4MAy3Uzhiw8ytFNy4vJUnP6Y5Lk157GPf8m2Mq7HVoM9js__U");'></div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-4 sm:px-10 py-8">
+<div class="flex flex-col lg:flex-row gap-8">
+<!-- Sidebar (25%) -->
+<aside class="w-full lg:w-1/4 flex flex-col gap-6">
+<!-- Spending Summary Card -->
+<div class="bg-white dark:bg-white/5 rounded-xl p-6 border border-primary/10 shadow-sm">
+<p class="text-[#866c65] dark:text-white/60 text-sm font-medium mb-1">Total Spending</p>
+<div class="flex items-baseline gap-2">
+<h1 class="text-[#171312] dark:text-white text-4xl font-bold tracking-tight">1.234€</h1>
+</div>
+<p class="text-primary text-sm font-semibold flex items-center gap-1 mt-2">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+                        +12% vs last month
+                    </p>
+</div>
+<!-- Mini Category Breakdown -->
+<div class="bg-white dark:bg-white/5 rounded-xl p-6 border border-primary/10 shadow-sm">
+<p class="text-[#171312] dark:text-white text-base font-bold mb-4">Category Breakdown</p>
+<div class="flex flex-col gap-4">
+<div class="relative pt-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-primary bg-primary/10">Housing</span>
+<span class="text-xs font-semibold inline-block text-primary">€450</span>
+</div>
+<div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-primary/10">
+<div class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-primary" style="width:45%"></div>
+</div>
+</div>
+<div class="relative pt-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-secondary bg-secondary/10">Food</span>
+<span class="text-xs font-semibold inline-block text-secondary">€320</span>
+</div>
+<div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-secondary/10">
+<div class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-secondary" style="width:32%"></div>
+</div>
+</div>
+<div class="relative pt-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-[#6D597A] bg-[#6D597A]/10">Fun</span>
+<span class="text-xs font-semibold inline-block text-[#6D597A]">€120</span>
+</div>
+<div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-[#6D597A]/10">
+<div class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-[#6D597A]" style="width:12%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Urgent Alerts -->
+<div class="bg-white dark:bg-white/5 rounded-xl p-6 border border-primary/10 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-[#171312] dark:text-white text-base font-bold">Urgent Alerts</h3>
+<span class="flex h-2 w-2 rounded-full bg-primary"></span>
+</div>
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-3 p-3 bg-red-50 dark:bg-red-900/10 rounded-lg border border-red-100 dark:border-red-900/20">
+<span class="material-symbols-outlined text-red-500">warning</span>
+<div>
+<p class="text-sm font-bold text-red-700 dark:text-red-400">Luz +5%</p>
+<p class="text-xs text-red-600/80 dark:text-red-400/60">Unexpected spike detected</p>
+</div>
+</div>
+<div class="flex items-center gap-3 p-3 bg-orange-50 dark:bg-orange-900/10 rounded-lg border border-orange-100 dark:border-orange-900/20">
+<span class="material-symbols-outlined text-orange-500">event_repeat</span>
+<div>
+<p class="text-sm font-bold text-orange-700 dark:text-orange-400">Rent Due</p>
+<p class="text-xs text-orange-600/80 dark:text-orange-400/60">Processing in 2 days</p>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-xl shadow-lg shadow-primary/20 transition-all">
+<span class="material-symbols-outlined">document_scanner</span>
+                    Scan AI Receipt
+                </button>
+</aside>
+<!-- Main Content Area (75%) -->
+<section class="w-full lg:w-3/4 flex flex-col gap-8">
+<!-- Main Donut and Summary -->
+<div class="bg-white dark:bg-white/5 rounded-xl p-8 border border-primary/10 shadow-sm grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+<div class="relative flex justify-center">
+<!-- SVG Donut Chart -->
+<svg class="w-64 h-64 transform -rotate-90">
+<circle class="text-primary/10" cx="128" cy="128" fill="transparent" r="100" stroke="currentColor" stroke-width="24"></circle>
+<circle class="text-primary" cx="128" cy="128" fill="transparent" r="100" stroke="currentColor" stroke-dasharray="628" stroke-dashoffset="150" stroke-width="24"></circle>
+<circle class="text-secondary" cx="128" cy="128" fill="transparent" r="100" stroke="currentColor" stroke-dasharray="628" stroke-dashoffset="400" stroke-width="24"></circle>
+<circle class="text-[#6D597A]" cx="128" cy="128" fill="transparent" r="100" stroke="currentColor" stroke-dasharray="628" stroke-dashoffset="550" stroke-width="24"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center transform rotate-0">
+<span class="text-[#866c65] dark:text-white/60 text-sm font-medium">Monthly Total</span>
+<span class="text-3xl font-bold text-[#171312] dark:text-white">€1.234</span>
+</div>
+</div>
+<div class="flex flex-col gap-6">
+<div>
+<h2 class="text-2xl font-bold text-[#171312] dark:text-white">Expense Distribution</h2>
+<p class="text-[#866c65] dark:text-white/60">Real-time breakdown of your family wallet.</p>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-primary"></span>
+<span class="text-sm font-medium">Rent &amp; Utilities</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-secondary"></span>
+<span class="text-sm font-medium">Groceries</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-[#6D597A]"></span>
+<span class="text-sm font-medium">Entertainment</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-gray-300"></span>
+<span class="text-sm font-medium">Others</span>
+</div>
+</div>
+<div class="pt-4 border-t border-primary/10">
+<button class="text-primary font-bold text-sm flex items-center gap-2">
+                                View Full Analytics <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Upcoming Recurring Expenses -->
+<div>
+<h3 class="text-[#171312] dark:text-white text-lg font-bold mb-4 px-2">Upcoming Recurring Expenses</h3>
+<div class="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+<!-- Card 1 -->
+<div class="min-w-[220px] bg-white dark:bg-white/5 p-5 rounded-xl border border-primary/10 shadow-sm">
+<div class="flex items-center justify-between mb-3">
+<div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center text-red-600">
+<span class="material-symbols-outlined">movie</span>
+</div>
+<span class="text-xs font-bold text-primary">In 3 days</span>
+</div>
+<p class="font-bold text-[#171312] dark:text-white">Netflix Premium</p>
+<p class="text-xl font-bold mt-1">€17.99</p>
+</div>
+<!-- Card 2 -->
+<div class="min-w-[220px] bg-white dark:bg-white/5 p-5 rounded-xl border border-primary/10 shadow-sm">
+<div class="flex items-center justify-between mb-3">
+<div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center text-green-600">
+<span class="material-symbols-outlined">bolt</span>
+</div>
+<span class="text-xs font-bold text-gray-400">Dec 15</span>
+</div>
+<p class="font-bold text-[#171312] dark:text-white">Electricity Bill</p>
+<p class="text-xl font-bold mt-1">€84.20</p>
+</div>
+<!-- Card 3 -->
+<div class="min-w-[220px] bg-white dark:bg-white/5 p-5 rounded-xl border border-primary/10 shadow-sm">
+<div class="flex items-center justify-between mb-3">
+<div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+<span class="material-symbols-outlined">wifi</span>
+</div>
+<span class="text-xs font-bold text-gray-400">Dec 18</span>
+</div>
+<p class="font-bold text-[#171312] dark:text-white">Internet Fiber</p>
+<p class="text-xl font-bold mt-1">€39.90</p>
+</div>
+<!-- Card 4 -->
+<div class="min-w-[220px] bg-white dark:bg-white/5 p-5 rounded-xl border border-primary/10 shadow-sm">
+<div class="flex items-center justify-between mb-3">
+<div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600">
+<span class="material-symbols-outlined">directions_car</span>
+</div>
+<span class="text-xs font-bold text-gray-400">Dec 20</span>
+</div>
+<p class="font-bold text-[#171312] dark:text-white">Car Insurance</p>
+<p class="text-xl font-bold mt-1">€120.00</p>
+</div>
+</div>
+</div>
+<!-- Last 5 Expenses Table -->
+<div class="bg-white dark:bg-white/5 rounded-xl border border-primary/10 shadow-sm overflow-hidden">
+<div class="p-6 border-b border-primary/10 flex justify-between items-center">
+<h3 class="text-[#171312] dark:text-white text-lg font-bold">Last 5 Expenses</h3>
+<button class="text-primary text-sm font-bold">View All</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-primary/5 dark:bg-white/5 text-[#866c65] dark:text-white/60 text-sm font-medium">
+<tr>
+<th class="px-6 py-4">Date</th>
+<th class="px-6 py-4">Merchant</th>
+<th class="px-6 py-4">Amount</th>
+<th class="px-6 py-4">Payer</th>
+<th class="px-6 py-4">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-primary/5 dark:divide-white/5">
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="px-6 py-4 text-sm font-medium">12 Dec</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-gray-100 dark:bg-white/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">shopping_cart</span>
+</div>
+<span class="font-bold">Mercadona</span>
+</div>
+</td>
+<td class="px-6 py-4 font-bold text-red-500">€45.20</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-blue-200" data-alt="Payer avatar"></div>
+<span class="text-sm">Marc</span>
+</div>
+</td>
+<td class="px-6 py-4 text-secondary">
+<span class="material-symbols-outlined text-sm">verified</span>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="px-6 py-4 text-sm font-medium">11 Dec</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-gray-100 dark:bg-white/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">local_gas_station</span>
+</div>
+<span class="font-bold">Repsol</span>
+</div>
+</td>
+<td class="px-6 py-4 font-bold text-red-500">€62.00</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-pink-200" data-alt="Payer avatar"></div>
+<span class="text-sm">Julia</span>
+</div>
+</td>
+<td class="px-6 py-4 text-secondary">
+<span class="material-symbols-outlined text-sm">verified</span>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="px-6 py-4 text-sm font-medium">10 Dec</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-gray-100 dark:bg-white/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">restaurant</span>
+</div>
+<span class="font-bold">The Burger Lab</span>
+</div>
+</td>
+<td class="px-6 py-4 font-bold text-red-500">€38.50</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-pink-200" data-alt="Payer avatar"></div>
+<span class="text-sm">Julia</span>
+</div>
+</td>
+<td class="px-6 py-4 text-gray-300">
+<span class="material-symbols-outlined text-sm">pending</span>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="px-6 py-4 text-sm font-medium">09 Dec</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-gray-100 dark:bg-white/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">medication</span>
+</div>
+<span class="font-bold">Pharmacy 24h</span>
+</div>
+</td>
+<td class="px-6 py-4 font-bold text-red-500">€12.40</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-blue-200" data-alt="Payer avatar"></div>
+<span class="text-sm">Marc</span>
+</div>
+</td>
+<td class="px-6 py-4 text-secondary">
+<span class="material-symbols-outlined text-sm">verified</span>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="px-6 py-4 text-sm font-medium">08 Dec</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-gray-100 dark:bg-white/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">shopping_bag</span>
+</div>
+<span class="font-bold">Zara Home</span>
+</div>
+</td>
+<td class="px-6 py-4 font-bold text-red-500">€24.90</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-pink-200" data-alt="Payer avatar"></div>
+<span class="text-sm">Julia</span>
+</div>
+</td>
+<td class="px-6 py-4 text-secondary">
+<span class="material-symbols-outlined text-sm">verified</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer Action Bar for Mobile/General accessibility -->
+<div class="fixed bottom-6 right-6 lg:hidden">
+<button class="bg-primary w-14 h-14 rounded-full flex items-center justify-center text-white shadow-xl shadow-primary/40">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+</div>
+</body></html>

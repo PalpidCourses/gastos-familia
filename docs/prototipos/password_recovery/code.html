@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Password Recovery - Family Expense Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#e07b61",
+              "background-light": "#F4F1DE",
+              "background-dark": "#201512",
+              "card-light": "#ffffff",
+              "card-dark": "#2d1f1b"
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen flex items-center justify-center p-4">
+<!-- Main Container -->
+<div class="layout-container flex h-full grow flex-col items-center justify-center w-full">
+<!-- Center Card -->
+<div class="layout-content-container flex flex-col w-full max-w-[480px] bg-card-light dark:bg-card-dark rounded-xl shadow-xl overflow-hidden">
+<!-- Logo or Icon Section -->
+<div class="flex justify-center pt-10">
+<div class="bg-primary/10 p-4 rounded-full">
+<span class="material-symbols-outlined text-primary text-4xl">lock_reset</span>
+</div>
+</div>
+<!-- Headline -->
+<div class="px-8 pt-6 pb-2">
+<h1 class="text-[#171312] dark:text-white tracking-tight text-[32px] font-bold leading-tight text-center">
+                    Forgot Password?
+                </h1>
+</div>
+<!-- Body Text -->
+<div class="px-8">
+<p class="text-[#171312] dark:text-gray-300 text-base font-normal leading-relaxed text-center">
+                    Enter the email address associated with your account and we'll send you a link to reset your password.
+                </p>
+</div>
+<!-- Form Section -->
+<div class="px-8 py-6 space-y-4">
+<!-- TextField -->
+<div class="flex flex-col gap-2">
+<label class="flex flex-col w-full">
+<p class="text-[#171312] dark:text-gray-200 text-sm font-semibold leading-normal pb-2">Email Address</p>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl">mail</span>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#171312] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-[#e4dedc] dark:border-gray-600 bg-white dark:bg-[#3d2b26] focus:border-primary h-14 placeholder:text-[#856c66] pl-12 pr-4 text-base font-normal leading-normal transition-all" placeholder="e.g. alex@family.com" type="email" value=""/>
+</div>
+</label>
+</div>
+<!-- SingleButton -->
+<div class="pt-2">
+<button class="flex w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-14 px-5 bg-primary hover:bg-[#d06b51] text-white text-base font-bold leading-normal tracking-[0.015em] transition-colors shadow-lg shadow-primary/20">
+<span class="truncate">Send Reset Link</span>
+</button>
+</div>
+</div>
+<!-- MetaText / Back Link -->
+<div class="pb-10 px-8">
+<a class="group flex items-center justify-center gap-2 text-[#856c66] dark:text-gray-400 hover:text-primary dark:hover:text-primary text-sm font-medium leading-normal transition-colors cursor-pointer" href="#">
+<span class="material-symbols-outlined text-sm">arrow_back</span>
+<span class="underline underline-offset-4">Back to Login</span>
+</a>
+</div>
+</div>
+<!-- Branding Footer -->
+<div class="mt-8 text-center">
+<p class="text-[#856c66] dark:text-gray-500 text-xs font-medium uppercase tracking-widest">
+                Family Expense Management System
+            </p>
+</div>
+</div>
+</body></html>

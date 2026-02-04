@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Join Family Registration</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e07d61",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#201512",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-primary/10 px-10 py-3 bg-white dark:bg-background-dark">
+<div class="flex items-center gap-4 text-[#171312] dark:text-white">
+<div class="size-6 text-primary">
+<span class="material-symbols-outlined text-3xl">family_restroom</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em] font-display">Family Expense Manager</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<div class="hidden md:flex items-center gap-9">
+<a class="text-[#171312] dark:text-gray-300 text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">How it Works</a>
+<a class="text-[#171312] dark:text-gray-300 text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Support</a>
+</div>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-opacity-90 transition-all shadow-sm">
+<span class="truncate">Create New Family</span>
+</button>
+</div>
+</header>
+<main class="flex-1 flex flex-col items-center justify-center py-12 px-4">
+<div class="max-w-[560px] w-full bg-white dark:bg-[#2a1d1a] rounded-xl shadow-xl border border-primary/5 p-8">
+<!-- Headline Section -->
+<div class="text-center mb-8">
+<h1 class="text-[#171312] dark:text-white tracking-light text-[32px] font-bold leading-tight font-display">Welcome to the Family</h1>
+<p class="text-[#856d66] dark:text-gray-400 text-base font-normal leading-normal mt-2">Join your family's shared workspace for AI-powered expense tracking.</p>
+</div>
+<!-- Registration Form -->
+<form class="space-y-6">
+<!-- Invitation Code Section - Highlighted -->
+<div class="p-5 bg-primary/5 dark:bg-primary/10 rounded-xl border border-primary/20">
+<label class="flex flex-col w-full">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary text-xl">key</span>
+<p class="text-[#171312] dark:text-white text-base font-semibold leading-normal font-display">Invitation Code</p>
+</div>
+<div class="flex gap-2">
+<input class="form-input flex w-full min-w-0 flex-1 rounded-lg text-[#171312] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-primary/30 bg-white dark:bg-background-dark h-14 placeholder:text-[#856d66]/50 p-[15px] text-lg font-mono font-bold leading-normal tracking-widest uppercase" placeholder="XXXX-XXXX-XXXX" type="text" value="GARC-2024-XPNS"/>
+<button class="flex min-w-[100px] cursor-pointer items-center justify-center rounded-lg h-14 px-4 bg-primary text-white text-sm font-bold hover:brightness-110 transition-all" type="button">
+                                        Verify
+                                    </button>
+</div>
+</label>
+<!-- Family Identity Badge (Visible when code is valid) -->
+<div class="mt-4 flex items-center gap-3 px-3 py-2 bg-green-50 dark:bg-green-900/20 border border-green-100 dark:border-green-800 rounded-lg">
+<span class="material-symbols-outlined text-green-600 dark:text-green-400 text-lg">check_circle</span>
+<p class="text-sm font-medium text-green-800 dark:text-green-300">
+                                    Joining: <span class="font-bold">The Garcia Family</span>
+</p>
+</div>
+</div>
+<!-- Personal Details -->
+<div class="grid grid-cols-1 gap-4">
+<label class="flex flex-col">
+<p class="text-[#171312] dark:text-white text-sm font-medium leading-normal pb-2 px-1">Full Name</p>
+<input class="form-input flex w-full rounded-lg text-[#171312] dark:text-white border border-[#e4dedc] dark:border-gray-700 bg-white dark:bg-background-dark h-12 placeholder:text-[#856d66] px-4 text-base font-normal leading-normal focus:ring-1 focus:ring-primary focus:border-primary" placeholder="John Garcia" type="text"/>
+</label>
+<label class="flex flex-col">
+<p class="text-[#171312] dark:text-white text-sm font-medium leading-normal pb-2 px-1">Email Address</p>
+<input class="form-input flex w-full rounded-lg text-[#171312] dark:text-white border border-[#e4dedc] dark:border-gray-700 bg-white dark:bg-background-dark h-12 placeholder:text-[#856d66] px-4 text-base font-normal leading-normal focus:ring-1 focus:ring-primary focus:border-primary" placeholder="john@garcia.com" type="email"/>
+</label>
+<label class="flex flex-col">
+<p class="text-[#171312] dark:text-white text-sm font-medium leading-normal pb-2 px-1">Create Password</p>
+<div class="relative">
+<input class="form-input flex w-full rounded-lg text-[#171312] dark:text-white border border-[#e4dedc] dark:border-gray-700 bg-white dark:bg-background-dark h-12 placeholder:text-[#856d66] px-4 text-base font-normal leading-normal focus:ring-1 focus:ring-primary focus:border-primary" placeholder="Min. 8 characters" type="password"/>
+<span class="material-symbols-outlined absolute right-3 top-3 text-[#856d66] cursor-pointer">visibility</span>
+</div>
+</label>
+</div>
+<!-- Submit Button -->
+<div class="pt-2">
+<button class="w-full flex cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 px-4 bg-primary text-white text-lg font-bold leading-normal tracking-[0.015em] hover:shadow-lg hover:-translate-y-0.5 transition-all" type="submit">
+<span class="truncate">Join Family</span>
+</button>
+</div>
+<!-- Secondary Info / Footer -->
+<div class="text-center space-y-4">
+<p class="text-[#856d66] dark:text-gray-400 text-sm">
+                                By joining, you agree to our <a class="text-primary hover:underline" href="#">Terms of Service</a> and <a class="text-primary hover:underline" href="#">Privacy Policy</a>.
+                            </p>
+<div class="pt-4 border-t border-[#f4f1f1] dark:border-gray-800">
+<p class="text-[#171312] dark:text-gray-300 text-sm">
+                                    Already have an account? <a class="text-primary font-bold hover:underline" href="#">Log In</a>
+</p>
+</div>
+</div>
+</form>
+</div>
+<!-- Feature Mini Cards -->
+<div class="max-w-[960px] w-full grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 px-4">
+<div class="flex flex-col items-center text-center p-4 bg-white/50 dark:bg-background-dark rounded-xl">
+<span class="material-symbols-outlined text-primary mb-2">document_scanner</span>
+<h3 class="font-bold text-[#171312] dark:text-white text-sm">AI Ticket Scanning</h3>
+<p class="text-xs text-[#856d66] dark:text-gray-400">Instantly parse receipts with precision.</p>
+</div>
+<div class="flex flex-col items-center text-center p-4 bg-white/50 dark:bg-background-dark rounded-xl">
+<span class="material-symbols-outlined text-primary mb-2">account_balance_wallet</span>
+<h3 class="font-bold text-[#171312] dark:text-white text-sm">Multi-level Reconciliation</h3>
+<p class="text-xs text-[#856d66] dark:text-gray-400">Easily settle shared family expenses.</p>
+</div>
+<div class="flex flex-col items-center text-center p-4 bg-white/50 dark:bg-background-dark rounded-xl">
+<span class="material-symbols-outlined text-primary mb-2">insights</span>
+<h3 class="font-bold text-[#171312] dark:text-white text-sm">Smart Insights</h3>
+<p class="text-xs text-[#856d66] dark:text-gray-400">Track spending habits of your entire unit.</p>
+</div>
+</div>
+</main>
+<!-- Footer Image (Decorative) -->
+<div class="w-full flex justify-center py-8 opacity-50 grayscale hover:grayscale-0 transition-all">
+<div class="w-32 h-1 bg-gradient-to-r from-transparent via-primary to-transparent rounded-full"></div>
+</div>
+</div>
+</div>
+</body></html>

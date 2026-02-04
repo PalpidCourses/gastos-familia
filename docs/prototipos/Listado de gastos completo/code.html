@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Full Family Expense Ledger - FamilyFinance</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e17c60",
+                        "secondary": "#81B29A",
+                        "accent-cream": "#F4F1DE",
+                        "tax-blue": "#6D8EA0",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#201512",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-accent-cream dark:bg-background-dark min-h-screen text-[#171312] dark:text-white transition-colors duration-300">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-primary/10 bg-white dark:bg-background-dark px-10 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-6">
+<svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-[#171312] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">FamilyFinance</h2>
+</div>
+<div class="hidden md:flex items-center gap-9">
+<a class="text-[#171312] dark:text-white/70 text-sm font-medium leading-normal hover:text-primary" href="#">Dashboard</a>
+<a class="text-primary text-sm font-semibold leading-normal" href="#">Ledger</a>
+<a class="text-[#171312] dark:text-white/70 text-sm font-medium leading-normal hover:text-primary" href="#">Analytics</a>
+<a class="text-[#171312] dark:text-white/70 text-sm font-medium leading-normal hover:text-primary" href="#">Receipts</a>
+</div>
+</div>
+<div class="flex flex-1 justify-end gap-4 items-center">
+<button class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-sm">document_scanner</span>
+            Scan AI Receipt
+        </button>
+<div class="h-6 w-px bg-primary/10 mx-2"></div>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-primary/5 dark:bg-white/5 text-[#171312] dark:text-white">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/20" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAZYTX-hf_Kg-GDzEqgN8dGleGBMIFSReLkGt8fOmvc1npSLtkuQCxkOkDgx4_QePPQVciCKeTcKmZtOCdN3uwJApd-EKgK3w_6x2cARvyMRBTafwgVbVz17FkPPH82yGBjfUmUK3-ihTxOYLLN_tqD2kVZbPaYiv6lcKvRaD50FAW3o5KtiL07v3iAduPkju-HFHWTfJgy8TCC9ctAxCdPjcOhXC4MAy3Uzhiw8ytFNy4vJUnP6Y5Lk157GPf8m2Mq7HVoM9js__U");'></div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-4 sm:px-10 py-8">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+<div>
+<h1 class="text-3xl font-bold text-[#171312] dark:text-white">Family Expense Ledger</h1>
+<p class="text-[#866c65] dark:text-white/60">Manage and reconcile your family's daily spending.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-white/10 border border-primary/20 rounded-lg text-sm font-medium">
+<span class="material-symbols-outlined text-sm">download</span> Export
+            </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-white/10 border border-primary/20 rounded-lg text-sm font-medium">
+<span class="material-symbols-outlined text-sm">print</span> Print
+            </button>
+</div>
+</div>
+<div class="bg-white dark:bg-white/5 p-4 rounded-xl border border-primary/10 shadow-sm mb-6 flex flex-wrap items-end gap-4">
+<div class="flex-1 min-w-[240px]">
+<label class="block text-xs font-bold text-[#866c65] uppercase mb-1.5 ml-1">Search</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-primary text-xl">search</span>
+<input class="w-full pl-10 pr-4 py-2.5 bg-accent-cream/30 dark:bg-white/5 border border-primary/10 rounded-lg focus:ring-primary focus:border-primary text-sm" placeholder="Search by description or notes..." type="text"/>
+</div>
+</div>
+<div class="w-full md:w-auto min-w-[180px]">
+<label class="block text-xs font-bold text-[#866c65] uppercase mb-1.5 ml-1">Date Range</label>
+<select class="w-full px-3 py-2.5 bg-accent-cream/30 dark:bg-white/5 border border-primary/10 rounded-lg focus:ring-primary focus:border-primary text-sm appearance-none">
+<option>Last 30 Days</option>
+<option>This Month</option>
+<option>Last Month</option>
+<option>Custom Range</option>
+</select>
+</div>
+<div class="w-full md:w-auto min-w-[150px]">
+<label class="block text-xs font-bold text-[#866c65] uppercase mb-1.5 ml-1">Category</label>
+<select class="w-full px-3 py-2.5 bg-accent-cream/30 dark:bg-white/5 border border-primary/10 rounded-lg focus:ring-primary focus:border-primary text-sm">
+<option>All Categories</option>
+<option>Housing</option>
+<option>Groceries</option>
+<option>Entertainment</option>
+<option>Health</option>
+</select>
+</div>
+<div class="w-full md:w-auto min-w-[150px]">
+<label class="block text-xs font-bold text-[#866c65] uppercase mb-1.5 ml-1">Payer</label>
+<select class="w-full px-3 py-2.5 bg-accent-cream/30 dark:bg-white/5 border border-primary/10 rounded-lg focus:ring-primary focus:border-primary text-sm">
+<option>All Members</option>
+<option>Marc (Dad)</option>
+<option>Julia (Mom)</option>
+<option>Leo</option>
+</select>
+</div>
+<div class="w-full md:w-auto min-w-[150px]">
+<label class="block text-xs font-bold text-[#866c65] uppercase mb-1.5 ml-1">Merchant</label>
+<select class="w-full px-3 py-2.5 bg-accent-cream/30 dark:bg-white/5 border border-primary/10 rounded-lg focus:ring-primary focus:border-primary text-sm">
+<option>All Merchants</option>
+<option>Mercadona</option>
+<option>Amazon</option>
+<option>Repsol</option>
+<option>Netflix</option>
+</select>
+</div>
+<button class="bg-primary/10 hover:bg-primary/20 text-primary h-[42px] px-4 rounded-lg flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined">tune</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<div class="bg-white dark:bg-white/5 p-5 rounded-xl border border-primary/10 shadow-sm flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<div>
+<p class="text-xs font-bold text-[#866c65] uppercase">Total Spending</p>
+<p class="text-2xl font-bold text-[#171312] dark:text-white">€2,458.30</p>
+</div>
+</div>
+<div class="bg-white dark:bg-white/5 p-5 rounded-xl border border-tax-blue/10 shadow-sm flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-tax-blue/10 flex items-center justify-center text-tax-blue">
+<span class="material-symbols-outlined">receipt_long</span>
+</div>
+<div>
+<p class="text-xs font-bold text-[#866c65] uppercase">Total Taxes</p>
+<p class="text-2xl font-bold text-tax-blue">€215.42</p>
+</div>
+</div>
+<div class="bg-white dark:bg-white/5 p-5 rounded-xl border border-secondary/10 shadow-sm flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">rebase_edit</span>
+</div>
+<div>
+<p class="text-xs font-bold text-[#866c65] uppercase">Reconciled Items</p>
+<p class="text-2xl font-bold text-secondary">182 / 245</p>
+</div>
+</div>
+</div>
+<div class="bg-white dark:bg-white/5 rounded-xl border border-primary/10 shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-primary/5 dark:bg-white/5 text-[#866c65] dark:text-white/60 text-xs font-bold uppercase tracking-wider">
+<tr>
+<th class="px-6 py-4">Date</th>
+<th class="px-6 py-4">Merchant</th>
+<th class="px-6 py-4 text-right">Amount</th>
+<th class="px-6 py-4">Payer</th>
+<th class="px-6 py-4">Category</th>
+<th class="px-6 py-4 text-center">Reconciled</th>
+<th class="px-6 py-4"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-primary/5 dark:divide-white/5">
+<tr class="hover:bg-primary/5 transition-colors group cursor-pointer">
+<td class="px-6 py-4 text-sm font-medium">Dec 14, 2023</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-accent-cream flex items-center justify-center text-primary border border-primary/10">
+<span class="material-symbols-outlined text-lg">local_gas_station</span>
+</div>
+<span class="font-bold text-[#171312] dark:text-white">Repsol Service Station</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right font-bold text-red-500">-€72.45</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-blue-200 border border-white dark:border-white/10 shadow-sm" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAZYTX-hf_Kg-GDzEqgN8dGleGBMIFSReLkGt8fOmvc1npSLtkuQCxkOkDgx4_QePPQVciCKeTcKmZtOCdN3uwJApd-EKgK3w_6x2cARvyMRBTafwgVbVz17FkPPH82yGBjfUmUK3-ihTxOYLLN_tqD2kVZbPaYiv6lcKvRaD50FAW3o5KtiL07v3iAduPkju-HFHWTfJgy8TCC9ctAxCdPjcOhXC4MAy3Uzhiw8ytFNy4vJUnP6Y5Lk157GPf8m2Mq7HVoM9js__U"); background-size: cover;'></div>
+<span class="text-sm font-medium">Marc</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full text-[11px] font-bold uppercase bg-gray-100 dark:bg-white/10 text-gray-600 dark:text-gray-300">Transport</span>
+</td>
+<td class="px-6 py-4 text-center">
+<div class="flex justify-center">
+<span class="material-symbols-outlined text-secondary text-xl">check_circle</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-[#866c65] hover:text-primary transition-colors">
+<span class="material-symbols-outlined">expand_more</span>
+</button>
+</td>
+</tr>
+<tr class="bg-primary/5">
+<td class="px-6 py-4 text-sm font-medium">Dec 12, 2023</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-accent-cream flex items-center justify-center text-primary border border-primary/10">
+<span class="material-symbols-outlined text-lg">shopping_cart</span>
+</div>
+<span class="font-bold text-[#171312] dark:text-white">Main Market</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right font-bold text-red-500">-€124.80</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-pink-200 border border-white dark:border-white/10 shadow-sm"></div>
+<span class="text-sm font-medium">Julia</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full text-[11px] font-bold uppercase bg-secondary/10 text-secondary border border-secondary/20">Groceries</span>
+</td>
+<td class="px-6 py-4 text-center">
+<div class="flex justify-center">
+<span class="material-symbols-outlined text-secondary text-xl">check_circle</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary">
+<span class="material-symbols-outlined">expand_less</span>
+</button>
+</td>
+</tr>
+<tr class="bg-primary/5">
+<td class="px-6 pb-6 pt-0" colspan="7">
+<div class="bg-white dark:bg-white/5 rounded-xl p-5 border border-primary/10 shadow-inner grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="col-span-1 md:col-span-2 flex flex-col">
+<div class="flex items-center justify-between mb-4">
+<h4 class="text-sm font-bold text-[#171312] dark:text-white uppercase tracking-tight">Itemized Details</h4>
+<span class="flex items-center gap-1.5 px-3 py-1 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg text-xs font-bold">
+<span class="material-symbols-outlined text-xs">credit_card</span> VISA **** 4242
+                                    </span>
+</div>
+<div class="space-y-3 flex-1">
+<div class="flex justify-between items-center text-sm">
+<span class="text-[#866c65]">Organic Chicken Breast (2kg) <span class="text-[10px] ml-1 bg-tax-blue/5 px-1 rounded text-tax-blue">VAT 4%</span></span>
+<span class="font-medium">€24.50</span>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="text-[#866c65]">Extra Virgin Olive Oil 5L <span class="text-[10px] ml-1 bg-tax-blue/5 px-1 rounded text-tax-blue">VAT 10%</span></span>
+<span class="font-medium">€42.00</span>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="text-[#866c65]">Assorted Fruits &amp; Vegetables <span class="text-[10px] ml-1 bg-tax-blue/5 px-1 rounded text-tax-blue">VAT 4%</span></span>
+<span class="font-medium">€38.30</span>
+</div>
+<div class="flex justify-between items-center text-sm">
+<span class="text-[#866c65]">Household Cleaning Supplies <span class="text-[10px] ml-1 bg-tax-blue/5 px-1 rounded text-tax-blue">VAT 21%</span></span>
+<span class="font-medium">€20.00</span>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-primary/10">
+<div class="flex justify-between items-center text-xs font-bold text-tax-blue uppercase tracking-wider mb-2">
+<span>Tax Summary (VAT)</span>
+<span>Total Tax: €9.24</span>
+</div>
+<div class="flex gap-4 text-[10px] text-[#866c65]">
+<span>VAT 4%: €2.51</span>
+<span>VAT 10%: €3.82</span>
+<span>VAT 21%: €2.91</span>
+</div>
+</div>
+<div class="mt-6 pt-4 border-t border-primary/10 flex gap-3">
+<button class="px-3 py-1.5 bg-primary text-white rounded-lg text-xs font-bold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm">edit</span> Edit Itemized
+                                    </button>
+<button class="px-3 py-1.5 bg-secondary/10 text-secondary border border-secondary/20 rounded-lg text-xs font-bold">
+                                        Split Expense
+                                    </button>
+</div>
+</div>
+<div class="col-span-1">
+<p class="text-[10px] font-bold text-[#866c65] uppercase mb-3">Scanned Receipt</p>
+<div class="relative group cursor-zoom-in">
+<div class="aspect-[3/4] rounded-lg bg-accent-cream border border-primary/20 overflow-hidden shadow-sm">
+<img alt="Scanned Receipt" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKU7anSzCOnd85xzcQA8AfuzL5oKykHCqKPwljWDMv8E8W0witLvTTFQJSfZD1uNzBWknM9IOqqejKkRhWtX9ufxzeNopGou-rRq2Bv_X9hQqFn-L04I-M-5CqkxXRgeqokIHGBS1R2s4BHKiwgusdOBRswG07IRoRNfGCrJ_3NVCduQNYCKGdjPgHAAfyJBXbTP9AmH06U31xZUThzul8436--uUKe1kVb7eFf83kfLYJ1FWL1enX4Y4elVd_01or6JEQ5SHDe4U"/>
+<div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-white opacity-0 group-hover:opacity-100 text-3xl">zoom_in</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors group cursor-pointer">
+<td class="px-6 py-4 text-sm font-medium">Dec 10, 2023</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-accent-cream flex items-center justify-center text-primary border border-primary/10">
+<span class="material-symbols-outlined text-lg">restaurant</span>
+</div>
+<span class="font-bold text-[#171312] dark:text-white">The Burger Lab</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right font-bold text-red-500">-€38.50</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-pink-200 border border-white dark:border-white/10 shadow-sm"></div>
+<span class="text-sm font-medium">Julia</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full text-[11px] font-bold uppercase bg-purple-100 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400">Dining Out</span>
+</td>
+<td class="px-6 py-4 text-center">
+<div class="flex justify-center">
+<span class="material-symbols-outlined text-gray-300 dark:text-white/10 text-xl">radio_button_unchecked</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-[#866c65] hover:text-primary transition-colors">
+<span class="material-symbols-outlined">expand_more</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors group cursor-pointer">
+<td class="px-6 py-4 text-sm font-medium">Dec 09, 2023</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-lg bg-accent-cream flex items-center justify-center text-primary border border-primary/10">
+<span class="material-symbols-outlined text-lg">medication</span>
+</div>
+<span class="font-bold text-[#171312] dark:text-white">Pharmacy 24h</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right font-bold text-red-500">-€12.40</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-blue-200 border border-white dark:border-white/10 shadow-sm" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAZYTX-hf_Kg-GDzEqgN8dGleGBMIFSReLkGt8fOmvc1npSLtkuQCxkOkDgx4_QePPQVciCKeTcKmZtOCdN3uwJApd-EKgK3w_6x2cARvyMRBTafwgVbVz17FkPPH82yGBjfUmUK3-ihTxOYLLN_tqD2kVZbPaYiv6lcKvRaD50FAW3o5KtiL07v3iAduPkju-HFHWTfJgy8TCC9ctAxCdPjcOhXC4MAy3Uzhiw8ytFNy4vJUnP6Y5Lk157GPf8m2Mq7HVoM9js__U"); background-size: cover;'></div>
+<span class="text-sm font-medium">Marc</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2.5 py-1 rounded-full text-[11px] font-bold uppercase bg-red-100 dark:bg-red-900/20 text-red-600 dark:text-red-400">Health</span>
+</td>
+<td class="px-6 py-4 text-center">
+<div class="flex justify-center">
+<span class="material-symbols-outlined text-secondary text-xl">check_circle</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-[#866c65] hover:text-primary transition-colors">
+<span class="material-symbols-outlined">expand_more</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-6 border-t border-primary/10 flex items-center justify-between bg-white dark:bg-transparent">
+<span class="text-sm text-[#866c65]">Showing 1 to 10 of 245 expenses</span>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1 rounded border border-primary/20 text-[#866c65] disabled:opacity-50">Previous</button>
+<button class="px-3 py-1 rounded bg-primary text-white font-bold">1</button>
+<button class="px-3 py-1 rounded hover:bg-primary/5 text-[#866c65]">2</button>
+<button class="px-3 py-1 rounded hover:bg-primary/5 text-[#866c65]">3</button>
+<button class="px-3 py-1 rounded border border-primary/20 text-[#866c65]">Next</button>
+</div>
+</div>
+</div>
+</main>
+<div class="fixed bottom-8 right-8 z-50">
+<button class="bg-primary hover:bg-primary/90 text-white flex items-center gap-3 px-6 py-4 rounded-full shadow-2xl shadow-primary/40 transition-all transform hover:scale-105 active:scale-95 group">
+<span class="material-symbols-outlined text-3xl group-hover:rotate-12 transition-transform">document_scanner</span>
+<span class="font-bold text-lg pr-2">Scan AI Receipt</span>
+</button>
+</div>
+
+</body></html>

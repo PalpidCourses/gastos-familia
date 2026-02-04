@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Add New Expense - Family Finance</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#e17c60",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#201512",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#171312] dark:text-white min-h-screen overflow-hidden">
+<!-- Main Content Background (Simulated Expenses Screen) -->
+<div class="flex h-screen w-full">
+<!-- Sidebar Navigation -->
+<aside class="w-64 border-r border-[#e5dedc] dark:border-[#3d2b27] bg-white dark:bg-[#2a1d1a] hidden lg:flex flex-col">
+<div class="p-6 flex flex-col gap-8">
+<div class="flex gap-3 items-center">
+<div class="bg-primary rounded-full size-10 flex items-center justify-center text-white">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-[#171312] dark:text-white text-base font-bold leading-tight">Family Finance</h1>
+<p class="text-[#866c65] dark:text-[#a08d88] text-xs">Management System</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#866c65] dark:text-[#a08d88] hover:bg-[#f4f1f0] dark:hover:bg-[#3d2b27]" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="text-sm font-medium">Expenses</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#866c65] dark:text-[#a08d88] hover:bg-[#f4f1f0] dark:hover:bg-[#3d2b27]" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-medium">Family</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#866c65] dark:text-[#a08d88] hover:bg-[#f4f1f0] dark:hover:bg-[#3d2b27]" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<span class="text-sm font-medium">Reports</span>
+</a>
+</nav>
+</div>
+</aside>
+<!-- Main Expense List Mockup -->
+<main class="flex-1 p-8 bg-background-light dark:bg-background-dark opacity-50 pointer-events-none">
+<div class="max-w-4xl mx-auto">
+<div class="flex justify-between items-center mb-8">
+<h2 class="text-3xl font-black">Expenses</h2>
+<button class="bg-primary text-white px-6 py-2 rounded-lg font-bold">Add New</button>
+</div>
+<div class="bg-white dark:bg-[#2a1d1a] rounded-xl border border-[#e5dedc] dark:border-[#3d2b27] overflow-hidden">
+<div class="p-4 border-b border-[#e5dedc] dark:border-[#3d2b27] flex justify-between bg-[#fcfafa] dark:bg-[#2d211e]">
+<span class="text-sm font-bold uppercase tracking-wider text-[#866c65]">Recent Transactions</span>
+</div>
+<div class="divide-y divide-[#e5dedc] dark:divide-[#3d2b27]">
+<div class="p-4 flex justify-between items-center">
+<div class="flex gap-4 items-center">
+<div class="w-10 h-10 bg-[#f4f1f0] dark:bg-[#3d2b27] rounded-lg flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">shopping_cart</span>
+</div>
+<div>
+<p class="font-bold">Weekly Groceries</p>
+<p class="text-xs text-[#866c65]">Oct 24, 2023 • Whole Foods</p>
+</div>
+</div>
+<span class="font-bold text-lg">€ 142.50</span>
+</div>
+<div class="p-4 flex justify-between items-center">
+<div class="flex gap-4 items-center">
+<div class="w-10 h-10 bg-[#f4f1f0] dark:bg-[#3d2b27] rounded-lg flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">electric_bolt</span>
+</div>
+<div>
+<p class="font-bold">Electricity Bill</p>
+<p class="text-xs text-[#866c65]">Oct 22, 2023 • Utility Co.</p>
+</div>
+</div>
+<span class="font-bold text-lg">€ 85.00</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Overlay Backdrop -->
+<div class="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"></div>
+<!-- Right Side Drawer -->
+<aside class="fixed right-0 top-0 bottom-0 w-full md:w-[450px] lg:w-[40%] bg-white dark:bg-background-dark shadow-2xl z-50 flex flex-col border-l border-[#e5dedc] dark:border-[#3d2b27] overflow-hidden">
+<!-- Drawer Header -->
+<div class="flex items-center justify-between p-6 border-b border-[#e5dedc] dark:border-[#3d2b27]">
+<div>
+<h2 class="text-2xl font-black text-[#171312] dark:text-white">Add New Expense</h2>
+<p class="text-sm text-[#866c65] dark:text-[#a08d88]">Log a manual expense or scan a receipt</p>
+</div>
+<button class="p-2 hover:bg-[#f4f1f0] dark:hover:bg-[#3d2b27] rounded-full transition-colors text-[#171312] dark:text-white">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- Drawer Content (Scrollable) -->
+<div class="flex-1 overflow-y-auto">
+<!-- AI Scanning Section -->
+<div class="p-6">
+<div class="flex flex-col items-center gap-4 rounded-xl border-2 border-dashed border-[#e5dedc] dark:border-[#3d2b27] bg-[#fcfafa] dark:bg-[#2d211e] px-6 py-8 hover:border-primary transition-colors cursor-pointer group">
+<div class="bg-primary/10 p-3 rounded-full text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined !text-3xl">document_scanner</span>
+</div>
+<div class="flex flex-col items-center gap-1">
+<p class="text-[#171312] dark:text-white text-lg font-bold">Upload Ticket</p>
+<p class="text-[#866c65] dark:text-[#a08d88] text-sm text-center">Drag and drop your receipt here for AI automatic processing</p>
+</div>
+<button class="bg-white dark:bg-[#3d2b27] border border-[#e5dedc] dark:border-[#523c36] text-[#171312] dark:text-white px-4 py-2 rounded-lg text-sm font-bold shadow-sm">
+                            Select File
+                        </button>
+</div>
+</div>
+<!-- Accordion Sections -->
+<div class="px-6 pb-32 flex flex-col gap-4">
+<!-- Section 1: Expense Data -->
+<details class="group border border-[#e5dedc] dark:border-[#3d2b27] rounded-xl overflow-hidden" open="">
+<summary class="flex cursor-pointer items-center justify-between gap-6 p-4 bg-[#fcfafa] dark:bg-[#2d211e] list-none">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">edit_note</span>
+<p class="text-[#171312] dark:text-white font-bold">1. Expense Data</p>
+</div>
+<span class="material-symbols-outlined text-[#866c65] group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-[#e5dedc] dark:border-[#3d2b27] bg-white dark:bg-[#201512]">
+<label class="flex flex-col gap-1 md:col-span-2">
+<span class="text-sm font-bold text-[#171312] dark:text-[#ddd]">Product or Service Name</span>
+<input class="w-full rounded-lg border-[#e5dedc] dark:border-[#3d2b27] bg-transparent focus:ring-primary focus:border-primary p-3" placeholder="e.g. Weekly Groceries" type="text"/>
+</label>
+<label class="flex flex-col gap-1">
+<span class="text-sm font-bold text-[#171312] dark:text-[#ddd]">Amount</span>
+<div class="relative">
+<input class="w-full rounded-lg border-[#e5dedc] dark:border-[#3d2b27] bg-transparent focus:ring-primary focus:border-primary p-3 pr-8" placeholder="0.00" type="number"/>
+<span class="absolute right-3 top-1/2 -translate-y-1/2 text-[#866c65]">€</span>
+</div>
+</label>
+<label class="flex flex-col gap-1">
+<span class="text-sm font-bold text-[#171312] dark:text-[#ddd]">Quantity</span>
+<input class="w-full rounded-lg border-[#e5dedc] dark:border-[#3d2b27] bg-transparent focus:ring-primary focus:border-primary p-3" type="number" value="1"/>
+</label>
+<label class="flex flex-col gap-1">
+<span class="text-sm font-bold text-[#171312] dark:text-[#ddd]">Category</span>
+<select class="w-full rounded-lg border-[#e5dedc] dark:border-[#3d2b27] bg-transparent focus:ring-primary focus:border-primary p-3">
+<option>Groceries</option>
+<option>Utilities</option>
+<option>Transport</option>
+<option>Dining Out</option>
+<option>Entertainment</option>
+</select>
+</label>
+<label class="flex flex-col gap-1">
+<span class="text-sm font-bold text-[#171312] dark:text-[#ddd]">Date</span>
+<input class="w-full rounded-lg border-[#e5dedc] dark:border-[#3d2b27] bg-transparent focus:ring-primary focus:border-primary p-3" type="date"/>
+</label>
+<label class="flex flex-col gap-1 md:col-span-2">
+<span class="text-sm font-bold text-[#171312] dark:text-[#ddd]">Merchant</span>
+<input class="w-full rounded-lg border-[#e5dedc] dark:border-[#3d2b27] bg-transparent focus:ring-primary focus:border-primary p-3" placeholder="e.g. Lidl, Shell, Netflix" type="text"/>
+</label>
+</div>
+</details>
+<!-- Section 2: Split & Payer -->
+<details class="group border border-[#e5dedc] dark:border-[#3d2b27] rounded-xl overflow-hidden">
+<summary class="flex cursor-pointer items-center justify-between gap-6 p-4 bg-[#fcfafa] dark:bg-[#2d211e] list-none">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">groups</span>
+<p class="text-[#171312] dark:text-white font-bold">2. Split &amp; Payer</p>
+</div>
+<span class="material-symbols-outlined text-[#866c65] group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="p-4 flex flex-col gap-6 border-t border-[#e5dedc] dark:border-[#3d2b27] bg-white dark:bg-[#201512]">
+<!-- Paid By (Single Select) -->
+<div class="flex flex-col gap-3">
+<span class="text-sm font-bold text-[#171312] dark:text-[#ddd]">Who paid?</span>
+<div class="flex gap-4">
+<div class="flex flex-col items-center gap-2 cursor-pointer group/avatar">
+<div class="size-12 rounded-full ring-2 ring-primary ring-offset-2 dark:ring-offset-[#201512] bg-cover bg-center" data-alt="Family member 1 profile" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDo-wjvD8iNHkhlox0f_06SZDFTISD6qHq1HB1mFlhTva2qK1TzJlWCRRGtzyNDcedRSXocR8TgU3Sk0vX6Uj7_eZbAJDJdlt6RJxHxkd4E1IAuIAOxXnr0IP-ilX_ish7y7wFyvYgD9tbKscWrQJSOadlrv8YZpfzwGeALxC1-_wltN9bmRlIHDYuk-y6ej-PI1QxPD9scdjq_j6nTDN6Z6IMCMWFTxGbLcgOQJ-2E6fQeZewC-KtQSgcimxFUkQvsrGqmqQ3Q4wQ')"></div>
+<span class="text-xs font-bold text-primary">Me</span>
+</div>
+<div class="flex flex-col items-center gap-2 cursor-pointer opacity-40 hover:opacity-100 transition-opacity">
+<div class="size-12 rounded-full bg-cover bg-center" data-alt="Family member 2 profile" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBSGb0w7ck9vorCX5hjdAmX6yLtPfjJ0hTKoWuUBxCbyBuuS-OCk6IX5mBk81b4_-9sgn_EWEKhLBYoKy8eOk2J_Xuau-iQD2zxFT2sz3_atFCQt1GqVcoFM2KE1RCledOKR6AyQiqOypOm90knDeCsUndQ7JWY78iOLzGCgaPyTtgKQxVnACk-lCdXxQSCPACjeFhZfzqF4tRd9ihtZWJRWpyzDMPG8DfLJzfrk2dKMWaRCFkDBUXm4p_e6Uv2G2cgpTDVuOy5fwg')"></div>
+<span class="text-xs font-medium">Sarah</span>
+</div>
+<div class="flex flex-col items-center gap-2 cursor-pointer opacity-40 hover:opacity-100 transition-opacity">
+<div class="size-12 rounded-full bg-cover bg-center" data-alt="Family member 3 profile" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAeuKTINkz99IGc_DXe8soXWwTptV4NYMI5yELnNh0TAMPi_MnpLnUup0ne9lhMv7J-b-x51APxRWWG4SYKTPHD_Mdu0CzwNPOndRGc8hyQ-Xovz-_X6bgfNAO-V27G4Ly0JkGoi46dCva2epWr-In-B8MREZ0L4QZmn46m9B82pIgKcTNba78GCxyWviPNZXpASGsTYP1EVJrezvXyK-tUgX9guWmhIcL9nIAYz8hMfRTiRlcdfbWgMiLMtU_v0i7Lgd_R_EAiP9g')"></div>
+<span class="text-xs font-medium">Mark</span>
+</div>
+</div>
+</div>
+<!-- For Whom (Multi Select) -->
+<div class="flex flex-col gap-3">
+<span class="text-sm font-bold text-[#171312] dark:text-[#ddd]">Split between:</span>
+<div class="space-y-2">
+<label class="flex items-center gap-3 p-3 rounded-lg border border-[#e5dedc] dark:border-[#3d2b27] cursor-pointer hover:bg-primary/5 transition-colors">
+<input checked="" class="rounded text-primary focus:ring-primary w-5 h-5" type="checkbox"/>
+<div class="size-8 rounded-full bg-cover bg-center" data-alt="Profile thumbnail" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCcOFOayJkToR4OXRDoZgw3mN6xduVvYGLdhWa2MhF6ZUc-oi9Jk0kH_f_vcdF_3PkmGmUs2bxouoquuAVQJyWDBF3rJpT8j1ty1MHjajKiAyuj7b805Tz7-O1iFFp0KeRhlvWTZQcrW-52T83pMlOGjyVuwOeYSo51bLnKE4Mk3KYaOAMds77tDHQv0lKaI13ciRd6OZl8UNRfmfN6hOLKHyVPoMfiLyZvLu-pZG8E2zwKK5d8fDMeS3arFuinR81JsyedJWJatV8')"></div>
+<span class="text-sm font-medium">Myself</span>
+</label>
+<label class="flex items-center gap-3 p-3 rounded-lg border border-[#e5dedc] dark:border-[#3d2b27] cursor-pointer hover:bg-primary/5 transition-colors">
+<input checked="" class="rounded text-primary focus:ring-primary w-5 h-5" type="checkbox"/>
+<div class="size-8 rounded-full bg-cover bg-center" data-alt="Profile thumbnail" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD3pvjw4RBUawhLSeOLU0pkyJPkaO-7yInSkjo6140am46pEsWHbmxay66A4FbwrisEyXgLeJ-9q4hKjoNnivmRPCUiNyosd-1n-eroPFPBpWnfWW-J2nN3cwhGJV0ruVMdGfrOw5N8ezJtYajf47o75B0UBorFYlO9TUt1fTjp3rS8dJAIMWHjWMPwKK8C3FIAyHiSZs_NqeYvuB96G1uSAIfCreix6FPMjaZggzPFIQFcEslN0Kl0WUBl_jSy3UUGJMk5qs1HCgA')"></div>
+<span class="text-sm font-medium">Sarah</span>
+</label>
+<label class="flex items-center gap-3 p-3 rounded-lg border border-[#e5dedc] dark:border-[#3d2b27] cursor-pointer hover:bg-primary/5 transition-colors">
+<input class="rounded text-primary focus:ring-primary w-5 h-5" type="checkbox"/>
+<div class="size-8 rounded-full bg-cover bg-center" data-alt="Profile thumbnail" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBZ_b4AQf8xB7FTJAjKNNk0gUgu4u62pYzlhYCmUPk-CQv4J2c8_zSqjxW_fGfIh2lRJ2BbQe3kZ6cFII37tzBk-PHUx785yYj5AoIkE_wUuNYr0u1P1LJFKL_kayPJ_DU7jE5hZC4gfCxR7LVedmvup_tjJAO6r18PQFTmJflXb6T2T-rWoBYfG-0LaJlAdjQzTy0tueHV_1MqcZ4whMXTWAnNUfGM4qV2NHM435u4drJwm3uwfDcTlZ19-H8ljo7ZuR9woZvrq9Y')"></div>
+<span class="text-sm font-medium">Mark</span>
+</label>
+</div>
+</div>
+</div>
+</details>
+<!-- Section 3: Notes -->
+<details class="group border border-[#e5dedc] dark:border-[#3d2b27] rounded-xl overflow-hidden">
+<summary class="flex cursor-pointer items-center justify-between gap-6 p-4 bg-[#fcfafa] dark:bg-[#2d211e] list-none">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">description</span>
+<p class="text-[#171312] dark:text-white font-bold">3. Notes</p>
+</div>
+<span class="material-symbols-outlined text-[#866c65] group-open:rotate-180 transition-transform">expand_more</span>
+</summary>
+<div class="p-4 border-t border-[#e5dedc] dark:border-[#3d2b27] bg-white dark:bg-[#201512]">
+<textarea class="w-full rounded-lg border-[#e5dedc] dark:border-[#3d2b27] bg-transparent focus:ring-primary focus:border-primary p-3" placeholder="Add extra details here... e.g. 'For the weekend BBQ' or 'Split extra for guest'" rows="4"></textarea>
+</div>
+</details>
+</div>
+</div>
+<!-- Sticky Footer Actions -->
+<div class="p-6 border-t border-[#e5dedc] dark:border-[#3d2b27] bg-white dark:bg-[#201512] flex gap-4">
+<button class="flex-1 px-6 py-4 rounded-xl border border-[#e5dedc] dark:border-[#3d2b27] text-[#171312] dark:text-white font-bold hover:bg-[#f4f1f0] dark:hover:bg-[#3d2b27] transition-colors">
+                    Cancel
+                </button>
+<button class="flex-[2] bg-primary text-white px-6 py-4 rounded-xl font-bold hover:brightness-110 shadow-lg shadow-primary/25 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">save</span>
+                    Save Expense
+                </button>
+</div>
+</aside>
+</div>
+</body></html>
