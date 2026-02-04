@@ -10,7 +10,8 @@ export default defineConfig({
     },
   },
   server: {
-    port: 3000,
+    port: 3001,
     host: true,
+    allowedHosts: ['nono.aretaslab.tech', 'localhost', '127.0.0.1'],
   },
 });
