@@ -364,9 +364,90 @@ app.delete('/api/family-members/:id', authenticateToken, async (req, res) => {
   }
 });
 
+// Invitations routes
+app.post('/api/invitations', authenticateToken, async (req, res) => {
+  const { email, role } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ error: 'Email is required' });
+  }
+
+  try {
+    // Obtener la primera familia del tenant
+    const familyResult = await pool.query(`
+      SELECT id FROM families
+      WHERE tenant_id = $1
+      LIMIT 1
+    `, [req.tenantId]);
+
+    if (familyResult.rows.length === 0) {
+      return res.status(404).json({ error: 'No family found' });
+    }
+
+    const familyId = familyResult.rows[0].id;
+
+    // Generar código de invitación (8 caracteres alfanuméricos)
+    const code = Math.random().toString(36).substring(2, 10);
+
+    // Calcular expiración (7 días)
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + 7);
+
+    const result = await pool.query(`
+      INSERT INTO invitations (tenant_id, family_id, email, code, role, expires_at)
+      VALUES ($1, $2, $3, $4, $5, $6)
+      RETURNING id, code, expires_at
+    `, [req.tenantId, familyId, email, code, role || 'parent', expiresAt]);
+
+    res.status(201).json({
+      ...result.rows[0],
+      invitation_link: `https://nono.aretaslab.tech/invite/${code}`
+    });
+  } catch (err) {
+    console.error('Error creating invitation:', err);
+    res.status(500).json({ error: 'Error creating invitation' });
+  }
+});
+
+app.get('/api/invitations', authenticateToken, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT i.id, i.email, i.role, i.accepted_at, i.expires_at, i.created_at
+      FROM invitations i
+      WHERE i.tenant_id = $1 AND i.accepted_at IS NULL
+      ORDER BY i.created_at DESC
+      LIMIT 50
+    `, [req.tenantId]);
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error fetching invitations:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.delete('/api/invitations/:id', authenticateToken, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      DELETE FROM invitations
+      WHERE id = $1 AND tenant_id = $2
+      RETURNING id
+    `, [req.params.id, req.tenantId]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Invitation not found' });
+    }
+
+    res.status(204).send();
+  } catch (err) {
+    console.error('Error deleting invitation:', err);
+    res.status(500).json({ error: 'Error deleting invitation' });
+  }
+});
+
 // Auth routes
 app.post('/api/auth/register', async (req, res) => {
-  const { email, password, tenantId } = req.body;
+  const { email, password, tenantId, tenantSlug, invitationCode } = req.body;
   
   try {
     // Hash password

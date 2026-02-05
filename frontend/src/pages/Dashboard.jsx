@@ -146,6 +146,15 @@ function Dashboard() {
               Gestionar miembros de familia
             </p>
           </button>
+          <button
+            onClick={() => navigate('/invitations')}
+            className="card text-left hover:shadow-md transition-shadow cursor-pointer"
+          >
+            <p className="font-semibold text-gray-900 dark:text-white">Invitaciones</p>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Invitar nuevos miembros
+            </p>
+          </button>
 
           {/* Gastos por categoría */}
           {!loading && Object.keys(byCategory).length > 0 && (

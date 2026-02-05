@@ -51,7 +51,20 @@ CREATE TABLE IF NOT EXISTS family_members (
   UNIQUE(family_id, user_id)
 );
 
--- Categorías
+-- Invitaciones
+CREATE TABLE IF NOT EXISTS invitations (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  tenant_id UUID NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
+  family_id UUID NOT NULL REFERENCES families(id) ON DELETE CASCADE,
+  email VARCHAR(255) NOT NULL,
+  code VARCHAR(10) UNIQUE NOT NULL,
+  role VARCHAR(50) DEFAULT 'parent' CHECK (role IN ('admin', 'parent', 'child')),
+  accepted_at TIMESTAMP,
+  expires_at TIMESTAMP NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Índices para rendimiento
 CREATE TABLE IF NOT EXISTS categories (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   tenant_id UUID NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
@@ -120,6 +133,8 @@ CREATE INDEX IF NOT EXISTS idx_expenses_category ON expenses(category_id);
 CREATE INDEX IF NOT EXISTS idx_expenses_merchant ON expenses(merchant_id);
 CREATE INDEX IF NOT EXISTS idx_users_tenant_email ON users(tenant_id, email);
 CREATE INDEX IF NOT EXISTS idx_family_members_family ON family_members(family_id);
+CREATE INDEX IF NOT EXISTS idx_invitations_code ON invitations(code);
+CREATE INDEX IF NOT EXISTS idx_invitations_email ON invitations(email, tenant_id);
 
 -- ROW LEVEL SECURITY POLICY
 ALTER TABLE tenants ENABLE ROW LEVEL SECURITY;

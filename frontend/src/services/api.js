@@ -66,3 +66,10 @@ export const familyMembersAPI = {
   update: (id, data) => api.put(`/family-members/${id}`, data),
   delete: (id) => api.delete(`/family-members/${id}`),
 };
+
+// Invitations
+export const invitationsAPI = {
+  list: () => api.get('/invitations'),
+  create: (data) => api.post('/invitations', data),
+  delete: (id) => api.delete(`/invitations/${id}`),
+};

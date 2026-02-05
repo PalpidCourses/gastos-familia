@@ -3,6 +3,8 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Categories from './pages/Categories';
+import Invitations from './pages/Invitations';
+import Invite from './pages/Invite';
 import FamilyMembers from './pages/FamilyMembers';
 import NewExpense from './pages/NewExpense';
 import { useAuth } from './contexts/AuthContext';
@@ -54,6 +56,16 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/invitations"
+          element={
+            <ProtectedRoute>
+              <Invitations />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/invite/:code" element={<Invite />} />
+      </Routes>
         <Route
           path="/expenses/new"
           element={
