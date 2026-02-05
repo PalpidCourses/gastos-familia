@@ -279,21 +279,37 @@ app.post('/api/family-members', authenticateToken, async (req, res) => {
 
     const familyId = familyResult.rows[0].id;
 
-    // Validar que el usuario pertenece al tenant
-    const userCheck = await pool.query(`
-      SELECT id FROM users
-      WHERE id = $1 AND tenant_id = $2
-    `, [user_id, req.tenantId]);
+    // user_id puede ser email o UUID, buscar el usuario
+    let userId = user_id;
+    
+    // Si parece un email, buscar por email
+    if (user_id.includes('@')) {
+      const userResult = await pool.query(`
+        SELECT id FROM users
+        WHERE email = $1 AND tenant_id = $2
+      `, [user_id, req.tenantId]);
+      
+      if (userResult.rows.length === 0) {
+        return res.status(400).json({ error: 'User not found in this tenant' });
+      }
+      userId = userResult.rows[0].id;
+    } else {
+      // Validar que el UUID pertenece al tenant
+      const userCheck = await pool.query(`
+        SELECT id FROM users
+        WHERE id = $1 AND tenant_id = $2
+      `, [user_id, req.tenantId]);
 
-    if (userCheck.rows.length === 0) {
-      return res.status(400).json({ error: 'User not found in this tenant' });
+      if (userCheck.rows.length === 0) {
+        return res.status(400).json({ error: 'User not found in this tenant' });
+      }
     }
 
     const result = await pool.query(`
       INSERT INTO family_members (family_id, user_id, role, allocation_percentage)
       VALUES ($1, $2, $3, $4)
       RETURNING id, role, allocation_percentage, user_id
-    `, [familyId, user_id, role, allocation_percentage || 50]);
+    `, [familyId, userId, role, allocation_percentage || 50]);
 
     res.status(201).json(result.rows[0]);
   } catch (err) {
