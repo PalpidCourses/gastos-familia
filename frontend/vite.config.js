@@ -13,10 +13,12 @@ export default defineConfig({
     port: 3001,
     host: true,
     allowedHosts: ['nono.aretaslab.tech', 'localhost', '127.0.0.1'],
-    // Proxy /api al backend (localhost:3000)
+    // Proxy /api al backend
+    // En Docker: usa VITE_API_BACKEND_URL (http://backend:3000)
+    // En local: usa localhost:3000
     proxy: {
       '/api': {
-        target: 'http://localhost:3000',
+        target: process.env.VITE_API_BACKEND_URL || 'http://localhost:3000',
         changeOrigin: true,
       },
     },

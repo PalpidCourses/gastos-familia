@@ -80,7 +80,7 @@ app.get('/health', (req, res) => {
 });
 
 // Expenses routes (requiere autenticación)
-app.get('/api/expenses', async (req, res) => {
+app.get('/api/expenses', authenticateToken, async (req, res) => {
   try {
     // Solo gastos del tenant autenticado
     const result = await pool.query(`
@@ -97,20 +97,25 @@ app.get('/api/expenses', async (req, res) => {
   }
 });
 
-app.post('/api/expenses', async (req, res) => {
+app.post('/api/expenses', authenticateToken, async (req, res) => {
+  console.log('POST /api/expenses, user:', req.user, 'tenantId:', req.tenantId);
   const { amount, description, category_id, merchant_id, payment_method, notes } = req.body;
-  
+
+  if (!req.tenantId) {
+    return res.status(401).json({ error: 'No tenant found' });
+  }
+
   try {
     // Convertir strings vacíos a NULL para UUIDs
     const categoryId = category_id || null;
     const merchantId = merchant_id || null;
-    
+
     const result = await pool.query(`
       INSERT INTO expenses (tenant_id, amount, description, category_id, merchant_id, payment_method, notes)
       VALUES ($1, $2, $3, $4, $5, $6, $7)
       RETURNING id, amount, description, created_at
     `, [req.tenantId, amount, description, categoryId, merchantId, payment_method, notes]);
-    
+
     res.status(201).json(result.rows[0]);
   } catch (err) {
     console.error('Error creating expense:', err);
@@ -207,15 +212,139 @@ app.delete('/api/categories/:id', async (req, res) => {
       WHERE id = $1 AND tenant_id = $2
       RETURNING id
     `, [req.params.id, req.tenantId]);
-    
+
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Category not found' });
     }
-    
+
     res.status(204).send();
   } catch (err) {
     console.error('Error deleting category:', err);
     res.status(500).json({ error: 'Error deleting category' });
+  }
+});
+
+// Family Members routes
+app.get('/api/family-members', authenticateToken, async (req, res) => {
+  try {
+    // Obtener la primera familia del tenant (simplificado)
+    const familyResult = await pool.query(`
+      SELECT id, name, slug
+      FROM families
+      WHERE tenant_id = $1
+      LIMIT 1
+    `, [req.tenantId]);
+
+    if (familyResult.rows.length === 0) {
+      return res.json([]);
+    }
+
+    const familyId = familyResult.rows[0].id;
+
+    const result = await pool.query(`
+      SELECT fm.id, fm.role, fm.allocation_percentage,
+             u.id as user_id, u.email, u.name, u.avatar_url, u.role as user_role
+      FROM family_members fm
+      JOIN users u ON fm.user_id = u.id
+      WHERE fm.family_id = $1
+      ORDER BY u.name ASC
+    `, [familyId]);
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error fetching family members:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.post('/api/family-members', authenticateToken, async (req, res) => {
+  console.log('POST /api/family-members, tenantId:', req.tenantId, 'body:', req.body);
+  const { user_id, role, allocation_percentage } = req.body;
+
+  if (!user_id || !role) {
+    return res.status(400).json({ error: 'user_id and role are required' });
+  }
+
+  try {
+    // Obtener la primera familia del tenant
+    const familyResult = await pool.query(`
+      SELECT id FROM families
+      WHERE tenant_id = $1
+      LIMIT 1
+    `, [req.tenantId]);
+
+    if (familyResult.rows.length === 0) {
+      return res.status(404).json({ error: 'No family found' });
+    }
+
+    const familyId = familyResult.rows[0].id;
+
+    // Validar que el usuario pertenece al tenant
+    const userCheck = await pool.query(`
+      SELECT id FROM users
+      WHERE id = $1 AND tenant_id = $2
+    `, [user_id, req.tenantId]);
+
+    if (userCheck.rows.length === 0) {
+      return res.status(400).json({ error: 'User not found in this tenant' });
+    }
+
+    const result = await pool.query(`
+      INSERT INTO family_members (family_id, user_id, role, allocation_percentage)
+      VALUES ($1, $2, $3, $4)
+      RETURNING id, role, allocation_percentage, user_id
+    `, [familyId, user_id, role, allocation_percentage || 50]);
+
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error('Error creating family member:', err);
+    if (err.code === '23505') {
+      return res.status(400).json({ error: 'User is already a family member' });
+    }
+    res.status(500).json({ error: 'Error creating family member' });
+  }
+});
+
+app.put('/api/family-members/:id', authenticateToken, async (req, res) => {
+  const { role, allocation_percentage } = req.body;
+
+  try {
+    const result = await pool.query(`
+      UPDATE family_members
+      SET role = COALESCE($2, role),
+          allocation_percentage = COALESCE($3, allocation_percentage),
+          updated_at = CURRENT_TIMESTAMP
+      WHERE id = $1
+      RETURNING id, role, allocation_percentage
+    `, [req.params.id, role, allocation_percentage]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Family member not found' });
+    }
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('Error updating family member:', err);
+    res.status(500).json({ error: 'Error updating family member' });
+  }
+});
+
+app.delete('/api/family-members/:id', authenticateToken, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      DELETE FROM family_members
+      WHERE id = $1
+      RETURNING id
+    `, [req.params.id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Family member not found' });
+    }
+
+    res.status(204).send();
+  } catch (err) {
+    console.error('Error deleting family member:', err);
+    res.status(500).json({ error: 'Error deleting family member' });
   }
 });
 

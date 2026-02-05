@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Save } from 'lucide-react';
-import { expensesAPI } from '../services/api';
+import { expensesAPI, categoriesAPI } from '../services/api';
 
 function NewExpense() {
   const navigate = useNavigate();
-  
+
   const [formData, setFormData] = useState({
     amount: '',
     description: '',
@@ -14,8 +14,22 @@ function NewExpense() {
     payment_method: '',
     notes: '',
   });
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    loadCategories();
+  }, []);
+
+  const loadCategories = async () => {
+    try {
+      const response = await categoriesAPI.list();
+      setCategories(response.data);
+    } catch (err) {
+      console.error('Error loading categories:', err);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -94,6 +108,24 @@ function NewExpense() {
                 className="input-base"
                 placeholder="Cena en restaurante"
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Categoría
+              </label>
+              <select
+                value={formData.category_id}
+                onChange={(e) => setFormData({ ...formData, category_id: e.target.value })}
+                className="input-base"
+              >
+                <option value="">Sin categoría</option>
+                {categories.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.icon} {cat.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div>

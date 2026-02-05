@@ -38,19 +38,19 @@ services:
       - ./backend/src:/app/src
     command: npm start
 
-  # Frontend React + Vite (usar nginx en producción)
+  # Frontend React + Vite (siempre dev mode)
   frontend:
     build: ./frontend
     container_name: gastosfamilia-frontend
     ports:
-      - "80:80"
+      - "3001:3001"
     environment:
-      VITE_API_URL: http://localhost:3000
+      # En Docker, usar nombre del servicio backend
+      VITE_API_BACKEND_URL: http://backend:3000
     depends_on:
       - backend
     volumes:
-      - ./frontend/src:/app/src
-    command: nginx -g 'daemon off;'
+      - ./frontend/src:/app/src  # Hot-reload durante desarrollo
 
 volumes:
   postgres_data:
