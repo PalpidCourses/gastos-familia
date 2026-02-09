@@ -73,3 +73,16 @@ export const invitationsAPI = {
   create: (data) => api.post('/invitations', data),
   delete: (id) => api.delete(`/invitations/${id}`),
 };
+
+// User Language
+export const userAPI = {
+  updateLanguage: (language) => api.put('/user/language', { language }),
+};
+
+// Recurring Expenses
+export const recurringAPI = {
+  list: () => api.get('/recurring-expenses'),
+  create: (data) => api.post('/recurring-expenses', data),
+  update: (id, data) => api.put(`/recurring-expenses/${id}`, data),
+  delete: (id) => api.delete(`/recurring-expenses/${id}`),
+};

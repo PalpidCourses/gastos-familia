@@ -12,7 +12,15 @@ export function AuthProvider({ children }) {
     const storedUser = localStorage.getItem('user');
     const token = localStorage.getItem('token');
     if (storedUser && token) {
-      setUser(JSON.parse(storedUser));
+      const userData = JSON.parse(storedUser);
+      // Extraer idioma del token JWT
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        userData.preferredLanguage = payload.preferredLanguage || null;
+        setUser(userData);
+      } catch (e) {
+        setUser(userData);
+      }
     }
     setLoading(false);
   }, []);
@@ -20,7 +28,15 @@ export function AuthProvider({ children }) {
   const login = async (email, password, tenantSlug) => {
     try {
       const response = await authAPI.login(email, password, tenantSlug);
-      const { user: userData, token } = response.data;
+      const { user: userData, token, tenant } = response.data;
+      
+      // Extraer preferredLanguage del token
+      if (token) {
+        try {
+          const payload = JSON.parse(atob(token.split('.')[1]));
+          userData.preferredLanguage = payload.preferredLanguage || null;
+        } catch (e) {}
+      }
       
       setUser(userData);
       localStorage.setItem('token', token);
@@ -55,8 +71,20 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('user');
   };
 
+  const updateLanguage = async (language) => {
+    try {
+      await authAPI.updateLanguage(language);
+      // Actualizar idioma en el usuario actual
+      setUser(prev => ({ ...prev, preferredLanguage: language }));
+      return { success: true };
+    } catch (error) {
+      const message = error.response?.data?.error || 'Error al actualizar idioma';
+      return { success: false, error: message };
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, updateLanguage }}>
       {children}
     </AuthContext.Provider>
   );

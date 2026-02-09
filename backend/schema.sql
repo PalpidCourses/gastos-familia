@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS users (
   role VARCHAR(50) NOT NULL CHECK (role IN ('admin', 'parent', 'child')),
   name VARCHAR(255),
   avatar_url TEXT,
+  preferred_language VARCHAR(10) DEFAULT 'es' CHECK (preferred_language IN ('en', 'es', 'ca')),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   UNIQUE(tenant_id, email)

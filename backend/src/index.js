@@ -464,8 +464,8 @@ app.post('/api/auth/register', async (req, res) => {
     
     // Crear usuario admin
     const userResult = await pool.query(`
-      INSERT INTO users (email, password_hash, tenant_id, role)
-      VALUES ($1, $2, $3, 'admin')
+      INSERT INTO users (email, password_hash, tenant_id, role, preferred_language)
+      VALUES ($1, $2, $3, 'admin', 'es')
       RETURNING id, email, role
     `, [email, hashedPassword, tenantIdDb]);
     
@@ -509,12 +509,21 @@ app.post('/api/auth/login', async (req, res) => {
     }
     
     // Buscar usuario
+    const queryParams = [email];
+    const whereConditions = ['u.email = $1'];
+    let paramIndex = 2;
+    
+    if (tenantId) {
+      whereConditions.push(`u.tenant_id = $${paramIndex}`);
+      queryParams.push(tenantId);
+    }
+    
     const userResult = await pool.query(`
-      SELECT u.id, u.email, u.password_hash, u.role, u.tenant_id, t.slug as tenant_slug
+      SELECT u.id, u.email, u.password_hash, u.role, u.tenant_id, t.slug as tenant_slug, u.preferred_language
       FROM users u
       JOIN tenants t ON u.tenant_id = t.id
-      WHERE u.email = $1 ${tenantId ? 'AND u.tenant_id = $2' : ''}
-    `, [email, tenantId]);
+      WHERE ${whereConditions.join(' AND ')}
+    `, queryParams);
     
     if (userResult.rows.length === 0) {
       return res.status(401).json({ error: 'Invalid credentials' });
@@ -528,20 +537,127 @@ app.post('/api/auth/login', async (req, res) => {
     }
     
     const token = jwt.sign(
-      { userId: user.id, tenantId: user.tenant_id, role: user.role },
+      { userId: user.id, tenantId: user.tenant_id, role: user.role, preferredLanguage: user.preferred_language || 'es' },
       process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
     
     res.json({
       success: true,
-      user: { id: user.id, email: user.email, role: user.role },
+      user: { id: user.id, email: user.email, role: user.role, preferredLanguage: user.preferred_language },
       tenant: { id: user.tenant_id, slug: user.tenant_slug },
       token
     });
   } catch (err) {
     console.error('Login error:', err);
     res.status(500).json({ error: 'Login failed' });
+  }
+});
+
+// Actualizar idioma del usuario
+app.put('/api/user/language', authenticateToken, async (req, res) => {
+  try {
+    const { language } = req.body;
+    
+    if (!['en', 'es', 'ca'].includes(language)) {
+      return res.status(400).json({ error: 'Invalid language. Must be en, es, or ca' });
+    }
+    
+    await pool.query(`
+      UPDATE users
+      SET preferred_language = $1
+      WHERE id = $2 AND tenant_id = $3
+    `, [language, req.user.userId, req.user.tenantId]);
+    
+    res.json({ success: true, language });
+  } catch (err) {
+    console.error('Error updating user language:', err);
+    res.status(500).json({ error: 'Failed to update language' });
+  }
+});
+
+// Recurring Expenses routes
+app.get('/api/recurring-expenses', authenticateToken, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT id, amount, description, frequency, next_date, end_date, is_active, created_at
+      FROM recurring_expenses
+      WHERE tenant_id = $1 AND is_active = true
+      ORDER BY next_date ASC
+      LIMIT 50
+    `, [req.tenantId]);
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error fetching recurring expenses:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.post('/api/recurring-expenses', authenticateToken, async (req, res) => {
+  const { amount, description, category_id, frequency, next_date, end_date } = req.body;
+
+  if (!req.tenantId) {
+    return res.status(401).json({ error: 'No tenant found' });
+  }
+
+  try {
+    const result = await pool.query(`
+      INSERT INTO recurring_expenses (tenant_id, amount, description, category_id, frequency, next_date, end_date, is_active)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, true)
+      RETURNING id, amount, description, frequency, next_date, created_at
+    `, [req.tenantId, amount, description, category_id || null, frequency, next_date, end_date || null]);
+
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error('Error creating recurring expense:', err);
+    res.status(500).json({ error: 'Error creating recurring expense' });
+  }
+});
+
+app.put('/api/recurring-expenses/:id', authenticateToken, async (req, res) => {
+  const { amount, description, frequency, next_date, end_date, is_active } = req.body;
+
+  try {
+    const result = await pool.query(`
+      UPDATE recurring_expenses
+      SET amount = COALESCE($2, amount),
+          description = COALESCE($3, description),
+          frequency = COALESCE($4, frequency),
+          next_date = COALESCE($5, next_date),
+          end_date = COALESCE($6, end_date),
+          is_active = COALESCE($7, is_active),
+          updated_at = CURRENT_TIMESTAMP
+      WHERE id = $1 AND tenant_id = $8
+      RETURNING id, amount, description, frequency, next_date, updated_at
+    `, [req.params.id, amount, description, frequency, next_date, end_date, is_active, req.tenantId]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Recurring expense not found' });
+    }
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error('Error updating recurring expense:', err);
+    res.status(500).json({ error: 'Error updating recurring expense' });
+  }
+});
+
+app.delete('/api/recurring-expenses/:id', authenticateToken, async (req, res) => {
+  try {
+    const result = await pool.query(`
+      DELETE FROM recurring_expenses
+      WHERE id = $1 AND tenant_id = $2
+      RETURNING id
+    `, [req.params.id, req.tenantId]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Recurring expense not found' });
+    }
+
+    res.status(204).send();
+  } catch (err) {
+    console.error('Error deleting recurring expense:', err);
+    res.status(500).json({ error: 'Error deleting recurring expense' });
   }
 });
 
